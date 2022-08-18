@@ -34,7 +34,7 @@ namespace CoronaStriker.UI
             onClose = onClose ?? new UnityEvent();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {

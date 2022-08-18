@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 16680654}
   - component: {fileID: 16680657}
+  - component: {fileID: 16680658}
   - component: {fileID: 16680656}
   - component: {fileID: 16680655}
   m_Layer: 5
@@ -220,6 +221,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16680653}
   m_CullTransparentMesh: 1
+--- !u!114 &16680658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16680653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9308966d8d0315c46b54d62fd116d1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorAnim: {fileID: 16680655}
 --- !u!1 &65047655
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,7 +772,7 @@ MonoBehaviour:
   - {fileID: 266801294}
   - {fileID: 1005744852}
   - {fileID: 1099349725}
-  selectionCursor: {fileID: 16680654}
+  selectionCursor: {fileID: 16680658}
   curSelected: 0
   minSelectedCount: 0
   maxSelectedCount: 2
@@ -1080,6 +1094,7 @@ MonoBehaviour:
   - {fileID: 1568911855}
   - {fileID: 1236752433}
   - {fileID: 218032892}
+  itemSelector: {fileID: 266284675}
 --- !u!1 &375293053
 GameObject:
   m_ObjectHideFlags: 0
