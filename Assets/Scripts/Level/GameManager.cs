@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CoronaStriker.Utils;
 
-public class GameManager : MonoBehaviour
+namespace CoronaStriker.Level
 {
-    // Start is called before the first frame update
-    void Start()
+    public sealed class GameManager : Singleton<GameManager>
     {
-        
-    }
+        public LevelData[] levelData;
+        public int curLevelIndex;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+            levelData = Resources.LoadAll<LevelData>("");
+            curLevelIndex = 0;
+        }
     }
 }

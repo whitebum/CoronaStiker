@@ -26,6 +26,12 @@ namespace CoronaStriker.Level
 
             setttingConfigurePanel.onOpen.AddListener(() => mainMenuPanel.ClosePanel());
             setttingConfigurePanel.onClose.AddListener(() => mainMenuPanel.OpenPanel());
+
+            mainMenuPanel.gameObject.SetActive(true);
+            selectLevelPanel.gameObject.SetActive(false);
+            howToPlayPanel.gameObject.SetActive(false);
+            hallOfFamePanel.gameObject.SetActive(false);
+            setttingConfigurePanel.gameObject.SetActive(false);
         }
     }
 }

@@ -38,14 +38,25 @@ namespace CoronaStriker.UI
 
         private void Awake()
         {
-            m_canvas = m_canvas ?? GetComponent<Canvas>();
-            m_canvasScaler = m_canvasScaler ?? GetComponent<CanvasScaler>();
+            if (!TryGetComponent(out m_canvas))
+            {
+                m_canvas.renderMode = renderMode;
+                m_canvas.worldCamera = Camera.main;
+            }
+
+            if (!TryGetComponent(out m_canvasScaler))
+            {
+                m_canvasScaler.uiScaleMode = scaleMode;
+                m_canvasScaler.referenceResolution = refResolution;
+                m_canvasScaler.screenMatchMode = screenMatchMode;
+                m_canvasScaler.matchWidthOrHeight = matchWidthOrHeight;
+            }
         }
 
         private void FixedUpdate()
         {
             if (!m_canvas.worldCamera)
-                m_canvas.worldCamera = Camera.main;
+                m_canvas.worldCamera = Camera.main ?? null;
         }
     }
 }
