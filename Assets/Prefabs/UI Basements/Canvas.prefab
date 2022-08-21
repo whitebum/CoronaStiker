@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9279445e3ae7f244e80a13b44309ed99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 6471486197704975354}
-  canvasScaler: {fileID: 6471486197704975355}
+  m_canvas: {fileID: 6471486197704975354}
+  m_canvasScaler: {fileID: 6471486197704975355}
 --- !u!223 &6471486197704975354
 Canvas:
   m_ObjectHideFlags: 0
