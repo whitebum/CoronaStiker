@@ -2,60 +2,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMessage : MonoBehaviour
+namespace CoronaStriker.UI
 {
-    [SerializeField] private Animator animator;
-
-    [Space(5.0f)]
-    [SerializeField] private float waitTime;
-    [SerializeField] private bool isShouldDisable = true;
-
-    [Space(5.0f)]
-    [SerializeField] private string openTriggerName = "Open";
-    private int openTriggerHash;
-    [SerializeField] private string closeTriggerName = "Close";
-    private int closeTriggerHash;
-
-    private void Reset()
+    public class GameMessage : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-    }
+        [SerializeField] private Animator animator;
 
-    private void Awake()
-    {
-        animator = animator ?? GetComponent<Animator>();
+        [Space(5.0f)]
+        [SerializeField] private float waitTime;
+        [SerializeField] private bool isShouldDisable = true;
 
-        openTriggerHash = Animator.StringToHash(openTriggerName);
-        closeTriggerHash = Animator.StringToHash(closeTriggerName);
-    }
+        [Space(5.0f)]
+        [SerializeField] private string openTriggerName = "Open";
+        private int openTriggerHash;
+        [SerializeField] private string closeTriggerName = "Close";
+        private int closeTriggerHash;
 
-    private void Start()
-    {
-        StartCoroutine(TestMessageCoroutine());
-    }
-
-    public void TestMessage()
-    {
-        gameObject.SetActive(true);
-
-        StartCoroutine(TestMessageCoroutine());
-    }
-
-    public IEnumerator TestMessageCoroutine()
-    {
-        animator.SetTrigger(openTriggerHash);
-
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-
-        if (isShouldDisable)
+        private void Reset()
         {
-            yield return new WaitForSeconds(waitTime);
+            animator = GetComponent<Animator>();
+        }
 
-            animator.SetTrigger(closeTriggerHash);
+        private void Awake()
+        {
+            animator = animator ?? GetComponent<Animator>();
+
+            openTriggerHash = Animator.StringToHash(openTriggerName);
+            closeTriggerHash = Animator.StringToHash(closeTriggerName);
+        }
+
+        private void Start()
+        {
+            StartCoroutine(TestMessageCoroutine());
+        }
+
+        public void TestMessage()
+        {
+            gameObject.SetActive(true);
+
+            StartCoroutine(TestMessageCoroutine());
+        }
+
+        public IEnumerator TestMessageCoroutine()
+        {
+            animator.SetTrigger(openTriggerHash);
 
             yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 
-            gameObject.SetActive(false);
+            if (isShouldDisable)
+            {
+                yield return new WaitForSeconds(waitTime);
+
+                animator.SetTrigger(closeTriggerHash);
+
+                yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+                gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Actors
+namespace CoronaStriker.Objects.Actors
 {
     [RequireComponent(typeof(CircleCollider2D))]
     public class CircleHitbox : Hitbox

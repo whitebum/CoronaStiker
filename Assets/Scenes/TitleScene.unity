@@ -225,7 +225,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 1772266033
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &60698055
 MonoBehaviour:
@@ -351,14 +351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55309387d0597e44facd118d5d825c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  background: {fileID: 64767956}
-  backgroundAnim: {fileID: 64767958}
-  introTrigger:
-    m_triggerName: Introduction
-    m_triggerHash: -315519012
-  titleTrigger:
-    m_triggerName: Main Title
-    m_triggerHash: -58566419
+  animator: {fileID: 64767958}
+  introTriggerName: Introduction
+  titleTriggerName: Main Title
 --- !u!1 &365224199
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,96 +403,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: {fileID: 64767959}
   isEndedIntro: 0
+  titleLogo: {fileID: 965904030}
+  pressLogo: {fileID: 912316326}
+  whitePanel: {fileID: 789770862}
   onIntroBegin:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 965904029}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 912316325}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 789770859}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onIntroEnd:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 64767959}
-        m_TargetAssemblyTypeName: CoronaStriker.UI.TitleBackground, Assembly-CSharp
-        m_MethodName: ChangeMainTitle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 965904029}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 912316325}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 789770862}
-        m_TargetAssemblyTypeName: CoronaStriker.UI.FadeableUI, Assembly-CSharp
-        m_MethodName: FadeOutEffect
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,7 +509,7 @@ GameObject:
   - component: {fileID: 789770862}
   - component: {fileID: 789770861}
   m_Layer: 5
-  m_Name: Temp
+  m_Name: White Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -666,7 +580,7 @@ MonoBehaviour:
   targetGraphic: {fileID: 789770861}
   isPlayOnAwake: 0
   isLoop: 0
-  fadeTime: 0.5
+  fadeTime: 0.8
   waitTime: 0
 --- !u!222 &789770863
 CanvasRenderer:
@@ -728,7 +642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

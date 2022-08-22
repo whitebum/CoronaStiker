@@ -11,11 +11,17 @@ namespace CoronaStriker.Level
         [Header("Member Objects Partition")]
         [SerializeField] private TitleBackground background;
 
-        [SerializeField] private bool isEndedIntro = false;
+        [Space(5.0f)]
+        [SerializeField] private bool isEndedIntro;
+
+        [Space(5.0f)]
+        [SerializeField] private Transform titleLogo;
+        [SerializeField] private Transform pressLogo;
+        [SerializeField] private FadeableUI whitePanel;
 
         [Header("Events Partition")]
-        [SerializeField] private UnityEvent onIntroBegin;
-        [SerializeField] private UnityEvent onIntroEnd;
+        [HideInInspector] public UnityEvent onIntroBegin;
+        [HideInInspector] public UnityEvent onIntroEnd;
 
         private void Reset()
         {
@@ -28,15 +34,23 @@ namespace CoronaStriker.Level
             onIntroBegin = onIntroBegin ?? new UnityEvent();
             onIntroEnd = onIntroEnd ?? new UnityEvent();
 
-            onIntroBegin.AddListener(() => isEndedIntro = false);
-            onIntroEnd.AddListener(() => isEndedIntro = true);
+            onIntroBegin.AddListener(() => { isEndedIntro = false; });
+            onIntroBegin.AddListener(() => { background.SetTrigger("Introduction"); });
+            onIntroBegin.AddListener(() => { titleLogo.gameObject.SetActive(false); });
+            onIntroBegin.AddListener(() => { pressLogo.gameObject.SetActive(false); });
+
+            onIntroEnd.AddListener(() => { isEndedIntro = true; });
+            onIntroEnd.AddListener(() => { background.SetTrigger("Main Title"); });
+            onIntroEnd.AddListener(() => { titleLogo.gameObject.SetActive(true); });
+            onIntroEnd.AddListener(() => { pressLogo.gameObject.SetActive(true); });
+            onIntroEnd.AddListener(() => { whitePanel.FadeOutEffect(); });
         }
 
         private IEnumerator Start()
         {
             onIntroBegin.Invoke();
 
-            yield return new WaitForSeconds(background.getCurrentAnimLength);
+            yield return new WaitForSeconds(background.GetCurrentAnimLength());
 
             onIntroEnd.Invoke();
 

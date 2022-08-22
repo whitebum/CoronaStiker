@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace CoronaStriker.Actors
+namespace CoronaStriker.Objects.Actors
 {
     [RequireComponent(typeof(Collider2D))]
     public abstract class Hitbox : MonoBehaviour
@@ -13,9 +13,9 @@ namespace CoronaStriker.Actors
         [SerializeField] protected Collider2D col;
 
         [Header("Events Partition")]
-        [SerializeField] private UnityEvent onTriggerEnter;
-        [SerializeField] private UnityEvent onTriggerStay;
-        [SerializeField] private UnityEvent onTriggerExit;
+        [SerializeField] public UnityEvent onTriggerEnter;
+        [SerializeField] public UnityEvent onTriggerStay;
+        [SerializeField] public UnityEvent onTriggerExit;
 
         private void Reset()
         {

@@ -6,36 +6,24 @@ using CoronaStriker.Utils;
 
 namespace CoronaStriker.UI
 {
-    public class TitleBackground : MonoBehaviour
+    public class TitleBackground : BaseBackground
     {
-        [Header("Member Instance Partition")]
-        [SerializeField] private Image background;
-        [SerializeField] private Animator backgroundAnim;
-        
-        [Header("Animation Trigger Partition")]
-        [SerializeField] private AnimationTrigger introTrigger;
-        [SerializeField] private AnimationTrigger titleTrigger;
+        [Header("애니메이션 트리거")]
+        [SerializeField] private string introTriggerName;
+        [SerializeField] private string titleTriggerName;
 
-        public float getCurrentAnimLength { get => backgroundAnim.GetCurrentAnimatorStateInfo(0).length; }
-
-        private void Reset()
+        protected override void Reset()
         {
-            TryGetComponent(out background);
-            TryGetComponent(out backgroundAnim);
+            base.Reset();
 
-            introTrigger = new AnimationTrigger("Introduction");
-            titleTrigger = new AnimationTrigger("Main Title");
+            introTriggerName = "Introduction";
+            titleTriggerName = "Main Title";
         }
 
         private void Awake()
         {
-            introTrigger = introTrigger ?? new AnimationTrigger("Introduction");
-            titleTrigger = titleTrigger ?? new AnimationTrigger("Main Title") ;
-        }
-
-        public void ChangeMainTitle()
-        {
-            backgroundAnim.SetTrigger(titleTrigger.triggerHash);
+            AddTrigger(introTriggerName);
+            AddTrigger(titleTriggerName);
         }
     }
 }
