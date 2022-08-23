@@ -5,28 +5,33 @@ using UnityEngine.Events;
 
 namespace CoronaStriker.Objects.Actors
 {
-    public class HealthSystem : MonoBehaviour
+    public abstract class HealthSystem : MonoBehaviour
     {
-        [SerializeField] private float maxHP;
-        [SerializeField] private float curHp;
+        public int maxHP { get; protected set; }        
+        public int curHP { get; protected set; }
 
+        [Space(5.0f)]
+        [SerializeField] private bool isDead;
+
+        [Space(5.0f)]
         [SerializeField] private UnityEvent onHeal;
         [SerializeField] private UnityEvent onHurt;
         [SerializeField] private UnityEvent onDead;
 
-        private void OnValidate()
+        protected virtual void Reset()
         {
-            curHp = maxHP;
-
             onHeal = new UnityEvent();
             onHurt = new UnityEvent();
             onDead = new UnityEvent();
+
+            isDead = false;
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
-            if (curHp != maxHP)
-                curHp = maxHP;
+            curHP = maxHP;
+
+            isDead = false;
 
             onHeal = onHeal ?? new UnityEvent();
             onHurt = onHurt ?? new UnityEvent();
