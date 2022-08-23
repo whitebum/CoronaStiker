@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Utils
+namespace CoronaStriker.Core.Utils
 {
     public class UnbreakableObject : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CoronaStriker.Utils
+namespace CoronaStriker.Core.Utils
 {
     [RequireComponent(typeof(UnbreakableObject))]
     public abstract class LazySingleton<T> : MonoBehaviour where T : class

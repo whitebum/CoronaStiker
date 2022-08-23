@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Utils
+namespace CoronaStriker.Core.Utils
 {
     [Serializable]
     public class AnimationTrigger

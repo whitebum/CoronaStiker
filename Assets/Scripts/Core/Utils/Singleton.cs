@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Utils
+namespace CoronaStriker.Core.Utils
 {
     [RequireComponent(typeof(UnbreakableObject))]
     public abstract class Singleton<T> : MonoBehaviour where T : class

@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace CoronaStriker.Objects.Actors
+namespace CoronaStriker.Core.Actors
 {
     public abstract class HealthSystem : MonoBehaviour
     {
-        public int maxHP { get; protected set; }        
-        public int curHP { get; protected set; }
+        public float maxHP { get; protected set; }        
+        public float curHP { get; protected set; }
 
-        [Space(5.0f)]
-        [SerializeField] private bool isDead;
+        public bool isInvincible { get; protected set; }
+        public float invincbleTimer { get; protected set; }
+
+        public bool isDead { get; protected set; }
 
         [Space(5.0f)]
         [SerializeField] private UnityEvent onHeal;
@@ -36,6 +38,18 @@ namespace CoronaStriker.Objects.Actors
             onHeal = onHeal ?? new UnityEvent();
             onHurt = onHurt ?? new UnityEvent();
             onDead = onDead ?? new UnityEvent();
+        }
+
+        public virtual void TakeDamage(float damage)
+        {
+            if (isInvincible || isDead)
+                return;
+
+            var temp = curHP - damage;
+
+            curHP = temp > maxHP ? maxHP : temp;
+
+            cur
         }
     }
 }

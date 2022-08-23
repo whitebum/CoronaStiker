@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace CoronaStriker.Objects.Actors
+namespace CoronaStriker.Core.Actors
 {
     [RequireComponent(typeof(Collider2D))]
     public abstract class Hitbox : MonoBehaviour

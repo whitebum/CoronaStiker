@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Objects.Actors
+namespace CoronaStriker.Core.Actors
 {
     public class PlayerHealth : HealthSystem
     {
-        [SerializeField] private bool isInvincible;
-        [SerializeField] private float invincbleTimer;
-
         protected override void Reset()
         {
             base.Reset();
@@ -37,6 +34,8 @@ namespace CoronaStriker.Objects.Actors
                     invincbleTimer = 0.0f;
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.KeypadMinus)) ;
         }
     }
 }

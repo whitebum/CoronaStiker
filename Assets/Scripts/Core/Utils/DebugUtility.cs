@@ -6,7 +6,7 @@
 #if !ENABLE_LOG
 using UnityEngine;
 
-namespace CoronaStriker.Utils
+namespace CoronaStriker.Core.Utils
 {
 
 public class Debug

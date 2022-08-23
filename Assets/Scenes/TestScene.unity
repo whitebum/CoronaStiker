@@ -1224,7 +1224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2b60edc05029740a1f2313a2bdeddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 0}
+  health: {fileID: 1248672781}
   hpIntegerName: Current HP
   deadTriggerName: Dead
   spriteRenderer: {fileID: 883478229}
@@ -1241,7 +1241,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04b25a3b4f115a4abe4fa7b3d505487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDead: 0
   onHeal:
     m_PersistentCalls:
       m_Calls:
@@ -1299,8 +1298,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isInvincible: 0
-  invincbleTimer: 0
 --- !u!1 &1586302216
 GameObject:
   m_ObjectHideFlags: 0

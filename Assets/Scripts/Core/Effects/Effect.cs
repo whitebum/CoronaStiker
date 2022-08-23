@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Objects.Effects
+namespace CoronaStriker.Core.Effects
 {
     public class Effect : MonoBehaviour
     {

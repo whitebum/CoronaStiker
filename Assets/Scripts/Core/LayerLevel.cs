@@ -1,4 +1,4 @@
-﻿namespace CoronaStriker.Objects
+﻿namespace CoronaStriker.Core
 {
     public struct LayerLevel
     {
