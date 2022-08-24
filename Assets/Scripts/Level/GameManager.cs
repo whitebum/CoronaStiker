@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CoronaStriker.Utils;
+using CoronaStriker.Core.Utils;
 
 namespace CoronaStriker.Level
 {

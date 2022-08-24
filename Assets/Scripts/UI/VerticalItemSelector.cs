@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Core.Actors
+namespace CoronaStriker.UI
 {
-    public class TestPlayer : MonoBehaviour
+    public class VerticalItemSelector : MonoBehaviour
     {
         
     }

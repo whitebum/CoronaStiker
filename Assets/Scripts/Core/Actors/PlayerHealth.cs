@@ -6,36 +6,44 @@ namespace CoronaStriker.Core.Actors
 {
     public class PlayerHealth : HealthSystem
     {
-        protected override void Reset()
+        [SerializeField] private bool isShield;
+
+        public sealed override void TakeDamage(float damage)
         {
-            base.Reset();
-
-            maxHP = curHP = 5;
-
-            isInvincible = false;
-            invincbleTimer = 0.0f;
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            isInvincible = false;
-            invincbleTimer = 0.0f;
-        }
-
-        private void Update()
-        {
-            if (isInvincible)
+            if (!isInvincible || !isDead)
             {
-                if ((invincbleTimer -= Time.deltaTime) < 0.0f)
+                if (isShield)
                 {
-                    isInvincible = false;
-                    invincbleTimer = 0.0f;
+                    isShield = false;
+
+                    SetInvincible(6.0f);
+                }
+                else
+                {
+                    var temp = curHP - damage;
+
+                    if (temp <= 0.0f)
+                    {
+                        curHP = 0.0f;
+                        isDead = true;
+
+                        if (deadParam != null)
+                            animator?.SetTrigger(deadParam);
+                    }
+                    else
+                    {
+                        curHP = temp;
+
+                        SetInvincible(6.0f);
+
+                        if (hurtParam != null && healthParam != null)
+                        {
+                            animator?.SetTrigger(hurtParam);
+                            animator?.SetFloat(healthParam, curHP);
+                        }
+                    }
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.KeypadMinus)) ;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CoronaStriker.Core.Actors
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, (col as CircleCollider2D).radius);
+            Gizmos.DrawWireSphere(transform.position, (colider as CircleCollider2D).radius);
         }
     }
 }

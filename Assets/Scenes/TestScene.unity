@@ -168,52 +168,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026c653039fafce45ae4a3344fab3c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: {fileID: 281073433}
+  colider: {fileID: 281073433}
   onTriggerEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1248672777}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onTriggerStay:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onTriggerExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!58 &281073433
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -573,8 +537,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1166468182}
-  - {fileID: 577138076}
   - {fileID: 1945423146}
+  - {fileID: 577138076}
   m_Father: {fileID: 1248672778}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -610,7 +574,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 518548871}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &577138077
 Animator:
@@ -858,7 +822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026c653039fafce45ae4a3344fab3c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: {fileID: 782061270}
+  colider: {fileID: 782061270}
   onTriggerEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -893,6 +857,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 883478227}
+  - component: {fileID: 883478230}
   - component: {fileID: 883478229}
   - component: {fileID: 883478228}
   m_Layer: 0
@@ -989,6 +954,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &883478230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883478226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab6a5d326cf23964e804fd2e4c081d66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 883478229}
+  animator: {fileID: 883478228}
 --- !u!1 &915356690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1224,7 +1203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2b60edc05029740a1f2313a2bdeddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 1248672781}
+  health: {fileID: 0}
   hpIntegerName: Current HP
   deadTriggerName: Dead
   spriteRenderer: {fileID: 883478229}
@@ -1238,27 +1217,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1248672777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c04b25a3b4f115a4abe4fa7b3d505487, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f224e436f8fa8248bf482fe08b8ef54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHP: 5
+  curHP: 5
+  animator: {fileID: 883478228}
+  animationParams:
+  - paramName: Health
+    paramHash: -915003867
+  - paramName: Damage
+    paramHash: 375673178
+  - paramName: Dead
+    paramHash: 1293411866
   onHeal:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1945423149}
-        m_TargetAssemblyTypeName: CoronaStriker.Objects.Effects.Effect, Assembly-CSharp
+        m_TargetAssemblyTypeName: CoronaStriker.Core.Effects.TestEffect, Assembly-CSharp
         m_MethodName: OnEffectOnce
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1248672780}
-        m_TargetAssemblyTypeName: CoronaStriker.Objects.Actors.TestPlayer, Assembly-CSharp
-        m_MethodName: UpdatePlayerSprite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1271,13 +1248,13 @@ MonoBehaviour:
   onHurt:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1248672780}
-        m_TargetAssemblyTypeName: CoronaStriker.Objects.Actors.TestPlayer, Assembly-CSharp
-        m_MethodName: UpdatePlayerSprite
+      - m_Target: {fileID: 883478226}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1521,13 +1498,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945423145}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 518548871}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1945423147
 Animator:

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using CoronaStriker.Utils;
+using CoronaStriker.Core.Utils;
 
 namespace CoronaStriker.UI
 {

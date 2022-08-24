@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Effects
 {
-    public class Effect : MonoBehaviour
+    public class TestEffect : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Animator animator;

@@ -9,28 +9,29 @@ namespace CoronaStriker.Core.Actors
     [RequireComponent(typeof(Collider2D))]
     public abstract class Hitbox : MonoBehaviour
     {
-        [Header("Member Properties Partition")]
-        [SerializeField] protected Collider2D col;
+        [Tooltip("액터의 Colider")]
+        [SerializeField] protected Collider2D colider;
 
-        [Header("Events Partition")]
-        [SerializeField] public UnityEvent onTriggerEnter;
-        [SerializeField] public UnityEvent onTriggerStay;
-        [SerializeField] public UnityEvent onTriggerExit;
+        [Header("이벤트들")]
+        [Tooltip("액터와 객체가 겹쳤을 때의 이벤트")]
+        public UnityEvent onTriggerEnter;
+        [Tooltip("액터와 객체가 겹친 상태가 유지될 때의 이벤트")]
+        public UnityEvent onTriggerStay;
+        [Tooltip("액터와 객체가 겹친 상태에서 탈출했을 때의 이벤트")]
+        public UnityEvent onTriggerExit;
 
         private void Reset()
         {
-            TryGetComponent(out col);
+            TryGetComponent(out colider);
 
             onTriggerEnter = new UnityEvent();
             onTriggerStay = new UnityEvent();
             onTriggerExit = new UnityEvent();
         }
 
-        
-
         private void Awake()
         {
-            col = col ?? GetComponent<Collider2D>();
+            colider = colider ?? GetComponent<Collider2D>();
 
             onTriggerEnter = onTriggerEnter ?? new UnityEvent();
             onTriggerStay = onTriggerStay ?? new UnityEvent();

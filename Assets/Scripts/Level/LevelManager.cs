@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using CoronaStriker.UI;
-using CoronaStriker.Utils;
+using CoronaStriker.Core.Utils;
 using UnityEditor;
 
 namespace CoronaStriker.Level
