@@ -27,9 +27,9 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] protected Animator animator;
 
         [Space(5.0f)]
-        [SerializeField] protected ActorAnimationParam healthParam;
-        [SerializeField] protected ActorAnimationParam hurtParam;
-        [SerializeField] protected ActorAnimationParam deadParam;
+        [SerializeField] protected ActorAnimationArgs healthParam;
+        [SerializeField] protected ActorAnimationArgs hurtParam;
+        [SerializeField] protected ActorAnimationArgs deadParam;
 
         [Header("이벤트")]
         [Tooltip("액터가 회복했을 때의 이벤트")]
@@ -49,9 +49,9 @@ namespace CoronaStriker.Core.Actors
 
             animator = GetComponentInChildren<Animator>();
 
-            healthParam = new ActorAnimationParam { paramName = "Heal", paramHash = Animator.StringToHash("Heal") };
-            hurtParam = new ActorAnimationParam { paramName = "Hurt", paramHash = Animator.StringToHash("Hurt") };
-            deadParam = new ActorAnimationParam { paramName = "Dead", paramHash = Animator.StringToHash("Dead") };
+            healthParam = new ActorAnimationArgs { argName = "Heal", argHash = Animator.StringToHash("Heal") };
+            hurtParam = new ActorAnimationArgs { argName = "Hurt", argHash = Animator.StringToHash("Hurt") };
+            deadParam = new ActorAnimationArgs { argName = "Dead", argHash = Animator.StringToHash("Dead") };
         }
 
         protected virtual void OnValidate()
@@ -75,9 +75,9 @@ namespace CoronaStriker.Core.Actors
             onHurt = onHurt ?? new UnityEvent();
             onDead = onDead ?? new UnityEvent();
 
-            healthParam = healthParam ?? new ActorAnimationParam { paramName = "Heal", paramHash = Animator.StringToHash("Heal") };
-            hurtParam = hurtParam ?? new ActorAnimationParam { paramName = "Hurt", paramHash = Animator.StringToHash("Hurt") };
-            deadParam = deadParam ?? new ActorAnimationParam { paramName = "Dead", paramHash = Animator.StringToHash("Dead") };
+            healthParam = healthParam ?? new ActorAnimationArgs { argName = "Heal", argHash = Animator.StringToHash("Heal") };
+            hurtParam = hurtParam ?? new ActorAnimationArgs { argName = "Hurt", argHash = Animator.StringToHash("Hurt") };
+            deadParam = deadParam ?? new ActorAnimationArgs { argName = "Dead", argHash = Animator.StringToHash("Dead") };
         }
 
         protected virtual void Update()
@@ -104,14 +104,14 @@ namespace CoronaStriker.Core.Actors
 
                     curHP = 0.0f;
 
-                    animator?.SetTrigger(deadParam?.paramName);
+                    animator?.SetTrigger(deadParam?.argName);
                     onDead?.Invoke();
                 }
                 else
                 {
                     curHP = temp;
 
-                    animator?.SetTrigger(hurtParam?.paramName);
+                    animator?.SetTrigger(hurtParam?.argName);
                     onHurt?.Invoke();
                 }
             }
@@ -121,6 +121,16 @@ namespace CoronaStriker.Core.Actors
         {
             invincibleTimer = time;
             isInvincible = true;
+        }
+
+        public static implicit operator string(HealthSystem health)
+        {
+            return $"Max HP: {health.maxHP:0.0} Current HP: {health.curHP:0.0}";
+        }
+
+        public static implicit operator float(HealthSystem health)
+        {
+            return health.curHP;
         }
     }
 }

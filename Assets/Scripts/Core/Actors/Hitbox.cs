@@ -22,7 +22,9 @@ namespace CoronaStriker.Core.Actors
 
         private void Reset()
         {
-            TryGetComponent(out colider);
+            colider = GetComponent<Collider2D>();
+            
+            colider.isTrigger = true;
 
             onTriggerEnter = new UnityEvent();
             onTriggerStay = new UnityEvent();

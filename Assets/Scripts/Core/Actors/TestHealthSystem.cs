@@ -12,7 +12,7 @@ namespace CoronaStriker.Core.Actors
 
         [Space(5.0f)]
         [SerializeField] private Animator animator;
-        [SerializeField] private List<ActorAnimationParam> animationParams;
+        [SerializeField] private List<ActorAnimationArgs> animationParams;
 
         [Space(5.0f)]
         public UnityEvent onHeal;
@@ -21,11 +21,11 @@ namespace CoronaStriker.Core.Actors
 
         private void Reset()
         {
-            animationParams = new List<ActorAnimationParam>();
+            animationParams = new List<ActorAnimationArgs>();
 
-            animationParams.Add(new ActorAnimationParam { paramName = "Health", paramHash = Animator.StringToHash("Health") });
-            animationParams.Add(new ActorAnimationParam { paramName = "Damage", paramHash = Animator.StringToHash("Damage") });
-            animationParams.Add(new ActorAnimationParam { paramName = "Dead", paramHash = Animator.StringToHash("Dead") });
+            animationParams.Add(new ActorAnimationArgs { argName = "Health", argHash = Animator.StringToHash("Health") });
+            animationParams.Add(new ActorAnimationArgs { argName = "Damage", argHash = Animator.StringToHash("Damage") });
+            animationParams.Add(new ActorAnimationArgs { argName = "Dead", argHash = Animator.StringToHash("Dead") });
 
             onHeal = new UnityEvent();
             onHurt = new UnityEvent();
@@ -34,7 +34,7 @@ namespace CoronaStriker.Core.Actors
 
         private void Awake()
         {
-            animationParams = animationParams ?? new List<ActorAnimationParam>();
+            animationParams = animationParams ?? new List<ActorAnimationArgs>();
 
             onHeal = onHeal ?? new UnityEvent();
             onHurt = onHurt ?? new UnityEvent();

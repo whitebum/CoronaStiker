@@ -44,11 +44,8 @@ TagManager:
   - name: Background
     uniqueID: 2814284063
     locked: 0
-  - name: Player
+  - name: Actor
     uniqueID: 3463305847
-    locked: 0
-  - name: Enemy
-    uniqueID: 400920235
     locked: 0
   - name: Effect
     uniqueID: 149381661
