@@ -129,7 +129,6 @@ namespace CoronaStriker.Core.Actors
             else
                 curHP = calHealth;
 
-            healEffect.OnEffectOnce();
             onHeal.Invoke();
         }
 
@@ -153,7 +152,7 @@ namespace CoronaStriker.Core.Actors
                 {
                     curHP = calHealth;
 
-                    GetHurtInvincible(6.0f);
+                    GetHurtInvincible(4.0f);
                     onHurt.Invoke();
                 }
             }

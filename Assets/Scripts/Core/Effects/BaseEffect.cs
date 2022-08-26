@@ -43,7 +43,7 @@ namespace CoronaStriker.Core.Effects
 
         public IEnumerator OnEffectOnceCoroutine()
         {
-            yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
             gameObject.SetActive(false);
         }
     }
