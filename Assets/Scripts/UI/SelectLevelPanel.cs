@@ -20,10 +20,6 @@ namespace CoronaStriker.UI
             });
             levels[1].onSelected.AddListener(() => 
             {
-                StartCoroutine(SceneTranslateCoroutine(1));
-            });
-            levels[2].onSelected.AddListener(() => 
-            {
                 StartCoroutine(SceneTranslateCoroutine(2));
             });
         }

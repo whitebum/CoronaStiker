@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace CoronaStriker.Core.Actors
 {
-    public class PlayerHealth : MonoBehaviour
+    public class PlayerHealth : HealthSystem
     {
         [SerializeField] private float maxHP;
         [SerializeField] private float curHP;
@@ -56,17 +56,20 @@ namespace CoronaStriker.Core.Actors
         {
             maxHP = curHP = 5.0f;
 
+            animator = GetComponentInChildren<Animator>();
+
             healthParam = "";
             deadParam = "";
             idleParam = "";
             hurtParam = "";
-
-            animator = GetComponentInChildren<Animator>();
         }
 
         private void Awake()
         {
             animator = animator ?? GetComponentInChildren<Animator>();
+
+            healthLayerIdx = animator.GetLayerIndex("Health Layer");
+            stateLayerIdx = animator.GetLayerIndex("State Layer");
 
             animParams = new Dictionary<string, ActorAnimationArgs>();
 
@@ -119,17 +122,20 @@ namespace CoronaStriker.Core.Actors
 
         public void TakeHealth(float health)
         {
-            if (curHP >= maxHP)
-                return;
+            if (!isDead)
+            {
+                if (curHP >= maxHP)
+                    return;
 
-            var calHealth = curHP + health;
+                var calHealth = curHP + health;
 
-            if (calHealth >= maxHP)
-                curHP = maxHP;
-            else
-                curHP = calHealth;
+                if (calHealth >= maxHP)
+                    curHP = maxHP;
+                else
+                    curHP = calHealth;
 
-            onHeal.Invoke();
+                onHeal.Invoke();
+            }
         }
 
         public void TakeDamage(float damage)
@@ -152,7 +158,7 @@ namespace CoronaStriker.Core.Actors
                 {
                     curHP = calHealth;
 
-                    GetHurtInvincible(4.0f);
+                    GetHurtInvincible(2.0f);
                     onHurt.Invoke();
                 }
             }

@@ -923,15 +923,15 @@ SpriteRenderer:
   m_SortingLayerID: -831661449
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 7e87d32bfb568514fa73bf7b4650b3be, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &819572360
@@ -958,7 +958,7 @@ Animator:
   m_GameObject: {fileID: 819572357}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5e517f25e237a3849bd011fea4c77919, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -977,7 +977,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 883478227}
-  - component: {fileID: 883478230}
   - component: {fileID: 883478229}
   - component: {fileID: 883478228}
   m_Layer: 0
@@ -1074,20 +1073,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &883478230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 883478226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab6a5d326cf23964e804fd2e4c081d66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 883478229}
-  animator: {fileID: 883478228}
 --- !u!1 &915356690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,7 +1269,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1248672778}
-  - component: {fileID: 1248672780}
   - component: {fileID: 1248672781}
   m_Layer: 0
   m_Name: Test Player
@@ -1292,7 +1276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1248672778
 Transform:
   m_ObjectHideFlags: 0
@@ -1311,18 +1295,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1248672780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1248672777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b2b60edc05029740a1f2313a2bdeddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1248672781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1348,7 +1320,7 @@ MonoBehaviour:
   invincibleEffect: {fileID: 1166468185}
   animator: {fileID: 883478228}
   healthLayerIdx: 0
-  stateLayerIdx: 1
+  stateLayerIdx: 0
   healthParam: Health
   deadParam: Dead
   idleParam: Idle
@@ -1407,8 +1379,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1548738422}
+  - component: {fileID: 1548738423}
   m_Layer: 0
-  m_Name: Test Enemy
+  m_Name: Big Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1431,6 +1404,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1548738423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548738421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab3ba0023549b754ca255bb0d74b894d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 3
+  curHP: 3
+  isDead: 0
+  isInvincible: 0
+  invincibleTimer: 0
+  animator: {fileID: 819572361}
+  healthLayerIdx: 0
+  stateLayerIdx: 1
+  healthParam: Health
+  deadParam: Dead
+  idleParam: Idle
+  hurtParam: Hurt
+  onHurt:
+    m_PersistentCalls:
+      m_Calls: []
+  onDead:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1586302216
 GameObject:
   m_ObjectHideFlags: 0
