@@ -1,6 +1,7 @@
 using CoronaStriker.Core.Effects;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,16 +9,6 @@ namespace CoronaStriker.Core.Actors
 {
     public class PlayerHealth : HealthSystem
     {
-        [SerializeField] private float maxHP;
-        [SerializeField] private float curHP;
-
-        public float MaxHP => maxHP;
-        public float CurHP => curHP;
-        public float healthAmount => curHP / maxHP;
-
-        [Space(10.0f)]
-        [SerializeField] private bool isDead;
-
         [Space(10.0f)]
         [SerializeField] private bool isHurt;
         [SerializeField] private float hurtInvincibleTimer;
@@ -26,57 +17,34 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] private bool isShield;
 
         [Space(10.0f)]
-        [SerializeField] private bool isInvincible;
-        [SerializeField] private float invincibleTimer;
-
-        [Space(10.0f)]
         [SerializeField] private BaseEffect healEffect;
         [SerializeField] private BaseEffect shieldEffect;
         [SerializeField] private BaseEffect invincibleEffect;
-
-        private Dictionary<string, ActorAnimationArgs> animParams;
-
+        [SerializeField] private FlashEffect flashEffect;
+ 
         [Space(10.0f)]
-        [SerializeField] private Animator animator;
         [SerializeField] private int healthLayerIdx;
         [SerializeField] private int stateLayerIdx;
 
-        [Space(5.0f)]
-        [SerializeField] private string healthParam;
-        [SerializeField] private string deadParam;
-        [SerializeField] private string idleParam;
-        [SerializeField] private string hurtParam;
-
         [Space(10.0f)]
-        [SerializeField] private UnityEvent onHeal;
-        [SerializeField] private UnityEvent onHurt;
-        [SerializeField] private UnityEvent onDead;
+        [SerializeField] private HealthEvent onHeal;
 
-        private void Reset()
+        protected override void Reset()
         {
-            maxHP = curHP = 5.0f;
-
-            animator = GetComponentInChildren<Animator>();
-
-            healthParam = "";
-            deadParam = "";
-            idleParam = "";
-            hurtParam = "";
+            base.Reset();
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            animator = animator ?? GetComponentInChildren<Animator>();
+            base.Awake();
 
-            healthLayerIdx = animator.GetLayerIndex("Health Layer");
-            stateLayerIdx = animator.GetLayerIndex("State Layer");
+            onHeal.AddListener((arg) => { UpdateHealth(); });
+            onHeal.AddListener((arg) => { if (healEffect) healEffect.OnEffectOnce(); });
 
-            animParams = new Dictionary<string, ActorAnimationArgs>();
+            onHurt.AddListener((arg) => { UpdateHealth(); });
+            onHurt.AddListener((arg) => { });
 
-            animParams.Add(healthParam, new ActorAnimationArgs { argName = healthParam, argHash = Animator.StringToHash(healthParam) });
-            animParams.Add(deadParam, new ActorAnimationArgs { argName = deadParam, argHash = Animator.StringToHash(deadParam) });
-            animParams.Add(idleParam, new ActorAnimationArgs { argName = idleParam, argHash = Animator.StringToHash(idleParam) });
-            animParams.Add(hurtParam, new ActorAnimationArgs { argName = hurtParam, argHash = Animator.StringToHash(hurtParam) });
+            onDead.AddListener((arg) => { gameObject.SetActive(false); });
         }
 
         private void Start()
@@ -84,7 +52,7 @@ namespace CoronaStriker.Core.Actors
             UpdateHealth();
         }
 
-        private void Update()
+        protected override void Update()
         {
             if (isInvincible)
             {
@@ -104,20 +72,22 @@ namespace CoronaStriker.Core.Actors
                     isHurt = false;
                     hurtInvincibleTimer = 0.0f;
 
-                    animator.SetTrigger(animParams[idleParam]);
+                    if (animTriggers.ContainsKey(idleTrigger))
+                        animator?.ResetTrigger(animTriggers[idleTrigger]);
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.KeypadPlus))
                 TakeHealth(1.0f);
 
-            if (Input.GetKeyDown(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.KeypadMinus))
                 TakeDamage(1.0f);
         }
 
-        private void UpdateHealth()
+        public void UpdateHealth()
         {
-            animator.SetInteger(animParams[healthParam], (int)curHP);
+            if (animTriggers.ContainsKey(healthTrigger))
+                animator?.SetInteger(animTriggers[healthTrigger], (int)curHP);
         }
 
         public void TakeHealth(float health)
@@ -134,11 +104,11 @@ namespace CoronaStriker.Core.Actors
                 else
                     curHP = calHealth;
 
-                onHeal.Invoke();
+                onHeal.Invoke(new HealthEventArgs());
             }
         }
 
-        public void TakeDamage(float damage)
+        public override void TakeDamage(float damage)
         {
             if (isShield)
             {
@@ -158,21 +128,22 @@ namespace CoronaStriker.Core.Actors
                 {
                     curHP = calHealth;
 
-                    GetHurtInvincible(2.0f);
-                    onHurt.Invoke();
+                    SetHurtInvincible(2.0f);
+                    onHurt.Invoke(new HealthEventArgs());
                 }
             }
         }
 
-        public void GetInvincible(float time = 6.0f)
+        public void GetInvincible(float time)
         {
             // if player hurted
             if (isHurt)
             {
                 isHurt = false;
                 hurtInvincibleTimer = 0.0f;
-                
-                animator.SetTrigger(animParams[idleParam]);
+
+                if (animTriggers.ContainsKey(idleTrigger))
+                    animator?.SetTrigger(animTriggers[idleTrigger]);
             }
 
             isInvincible = false;
@@ -181,14 +152,17 @@ namespace CoronaStriker.Core.Actors
             invincibleEffect.OnEffect();
         }
 
-        public void GetHurtInvincible(float time = 10.0f)
+        public void SetHurtInvincible(float time = 10.0f)
         {
             if (!isHurt)
             {
                 isHurt = true;
                 hurtInvincibleTimer = time;
 
-                animator.SetTrigger(animParams[hurtParam]);
+                //if (animTriggers.ContainsKey(hurtTrigger))
+                //    animator?.SetTrigger(animTriggers[hurtTrigger]);
+
+                animator?.SetTrigger("Hurt");
             }
         }
 
@@ -213,11 +187,11 @@ namespace CoronaStriker.Core.Actors
                 curHP = 0.0f;
                 isDead = true;
 
-                animator.SetTrigger(animParams[deadParam]);
+                animator.SetTrigger(animTriggers[deadTrigger]);
 
-                yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(stateLayerIdx).length);
+                yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
 
-                onDead.Invoke();
+                onDead.Invoke(new HealthEventArgs());
             }
         }
     }

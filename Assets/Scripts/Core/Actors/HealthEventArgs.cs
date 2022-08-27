@@ -5,8 +5,8 @@ using UnityEngine.Events;
 
 namespace CoronaStriker.Core.Actors
 {
-    public class CellHealth : HealthSystem
+    public class HealthEventArgs : UnityEvent<float>
     {
-        
+
     }
 }

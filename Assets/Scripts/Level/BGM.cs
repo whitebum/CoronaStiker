@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CoronaStriker.Level
 {
-    [CreateAssetMenu(fileName = "New BGM", menuName = "Create New Audio/BGM", order = int.MaxValue)]
+    [CreateAssetMenu(fileName = "New BGM", menuName = "Audio/BGM", order = int.MaxValue)]
     public sealed class BGM : Audio
     {
         [SerializeField] private bool _isLoop;

@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Actors
 {
-    public class Bullet : MonoBehaviour
+    public sealed class Virus1AttackAI : VirusAttackAI
     {
-        public void Update()
+        protected override void Attack(float deltaTime)
         {
-            transform.Translate(20.0f * Time.deltaTime * Vector3.up);
+            
         }
     }
 }
