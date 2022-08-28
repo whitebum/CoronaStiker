@@ -1,12 +1,25 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
-namespace Assets.Scripts.UI
+namespace CoronaStriker.UI
 {
-    internal class StageBackground
+    public class StageBackground : BaseBackground
     {
+        [SerializeField] private string infectionTrigger;
+        [SerializeField] private string cureTrigger;
+
+        protected override void Reset()
+        {
+            infectionTrigger = "";
+            cureTrigger = "";
+        }
+
+        protected override void Awake()
+        {
+            AddTrigger(infectionTrigger);
+            AddTrigger(cureTrigger);
+        }
     }
 }

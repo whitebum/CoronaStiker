@@ -9,6 +9,24 @@ namespace CoronaStriker.UI.Editor
 {
     public static class UICreateMenu
     {
+        private static string fadeableImagePath = "Assets/Prefabs/UI Basements/Fadeable Image.prefab";
+        private static string fadeableImageName = "Fadeable Image";
+
+        private static string customCanvasPath = "Assets/Prefabs/UI Basements/Canvas.prefab";
+        private static string customCanvasName = "Custom Canvas";
+
+        private static string eventSystemPath = "Assets/Prefabs/UI Basements/EventSystem.prefab";
+        private static string eventSystemName = "EventSystem";
+
+        private static string fadeableTextPath = "Assets/Prefabs/UI Basements/Fadeable Text.prefab";
+        private static string fadeableTextName = "Fadeable Text";
+
+        private static string menuPanelPath = "Assets/Prefabs/UI Basements/Menu Panel.prefab";
+        private static string menuPanelName = "New Menu Panel";
+
+        private static string recordViewerPath = "Assets/Prefabs/UI Basements/Record Viewer.prefab";
+        private static string recordViewerName = "New Record Viewer";
+
         private static void HandleCreateContext(MenuCommand menuCommand, GameObject createdObject)
         {
             // 부모 오브젝트 설정
@@ -25,12 +43,6 @@ namespace CoronaStriker.UI.Editor
 
             return createdClone;
         }
-
-        private static string customCanvasPath = "Assets/Prefabs/UI Basements/Canvas.prefab";
-        private static string customCanvasName = "Custom Canvas";
-
-        private static string eventSystemPath = "Assets/Prefabs/UI Basements/EventSystem.prefab";
-        private static string eventSystemName = "EventSystem";  
 
         [MenuItem("GameObject/UI/Custom Canvas")]
         private static void CreateCustomCanvas(MenuCommand menuCommand)
@@ -49,9 +61,6 @@ namespace CoronaStriker.UI.Editor
             }
         }
 
-        private static string fadeableImagePath = "Assets/Prefabs/UI Basements/Fadeable Image.prefab";
-        private static string fadeableImageName = "Fadeable Image";
-
         [MenuItem("GameObject/UI/Fadeable Image")]
         private static void CreateFadeableImage(MenuCommand menuCommand)
         {
@@ -60,9 +69,6 @@ namespace CoronaStriker.UI.Editor
 
             HandleCreateContext(menuCommand, newFadeableImage);
         }
-
-        private static string fadeableTextPath = "Assets/Prefabs/UI Basements/Fadeable Text.prefab";
-        private static string fadeableTextName = "Fadeable Text";
 
         [MenuItem("GameObject/UI/Fadeable Text")]
         private static void CreateFadeableText(MenuCommand menuCommand)
@@ -73,9 +79,6 @@ namespace CoronaStriker.UI.Editor
             HandleCreateContext(menuCommand, newFadeableText);
         }
 
-        private static string menuPanelPath = "Assets/Prefabs/UI Basements/Menu Panel.prefab";
-        private static string menuPanelName = "New Menu Panel";
-
         [MenuItem("GameObject/UI/Menu Panel")]
         private static void CreateMenuPanel(MenuCommand menuCommand)
         {
@@ -84,9 +87,6 @@ namespace CoronaStriker.UI.Editor
 
             HandleCreateContext(menuCommand, newMenuPanel);
         }
-
-        private static string recordViewerPath = "Assets/Prefabs/UI Basements/Record Viewer.prefab";
-        private static string recordViewerName = "New Record Viewer";
 
         [MenuItem("GameObject/UI/Record Viewer")]
         private static void CreateRecordViewer(MenuCommand menuCommand)

@@ -1,33 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CoronaStriker.Core.Utils;
 
 namespace CoronaStriker.UI
 {
-    public class BaseBackground : MonoBehaviour
+    public abstract class BaseBackground : MonoBehaviour
     {
-        [Header("백그라운드 애니메이터")]
-        [SerializeField] private Animator animator;
-        
-        private Dictionary<string, int> triggers = new Dictionary<string, int>();
+        [SerializeField] protected Animator animator;
+
+        protected Dictionary<string, AnimationArgs> animTriggers;
 
         protected virtual void Reset()
         {
             animator = GetComponent<Animator>();
         } 
 
-        public void AddTrigger(string triggerName)
+        protected virtual void Awake()
         {
-            triggers.Add(triggerName, Animator.StringToHash(triggerName));
+            animTriggers = new Dictionary<string, AnimationArgs>();
         }
 
-        public void SetTrigger(string triggerName)
+        protected void AddTrigger(string triggerName)
         {
-            if (triggers.ContainsKey(triggerName) != false)
-                animator.SetTrigger(triggers[triggerName]);
+            if (triggerName != null && triggerName != "")
+                animTriggers.Add(triggerName, new AnimationArgs { argName = triggerName, argHash = Animator.StringToHash(triggerName) });
         }
 
-        public float GetCurrentAnimLength()
+        protected void SetTrigger(string triggerName)
+        {
+            if (animTriggers.ContainsKey(triggerName))
+                animator?.SetTrigger(animTriggers[triggerName]);
+        }
+
+        protected float GetCurrentAnimLength()
         {
             return animator.GetCurrentAnimatorStateInfo(0).length;
         }

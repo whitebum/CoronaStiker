@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using CoronaStriker.UI;
+using CoronaStriker.Core.Utils;
 
 namespace CoronaStriker.Level
 {
@@ -35,26 +36,15 @@ namespace CoronaStriker.Level
             onIntroEnd = onIntroEnd ?? new UnityEvent();
 
             onIntroBegin.AddListener(() => { isEndedIntro = false; });
-            onIntroBegin.AddListener(() => { background.SetTrigger("Introduction"); });
+            onIntroBegin.AddListener(() => { /*background.SetTrigger("Introduction");*/ });
             onIntroBegin.AddListener(() => { titleLogo.gameObject.SetActive(false); });
             onIntroBegin.AddListener(() => { pressLogo.gameObject.SetActive(false); });
 
             onIntroEnd.AddListener(() => { isEndedIntro = true; });
-            onIntroEnd.AddListener(() => { background.SetTrigger("Main Title"); });
+            onIntroEnd.AddListener(() => { /*background.SetTrigger("Main Title");*/ });
             onIntroEnd.AddListener(() => { titleLogo.gameObject.SetActive(true); });
             onIntroEnd.AddListener(() => { pressLogo.gameObject.SetActive(true); });
             onIntroEnd.AddListener(() => { whitePanel.FadeOutEffect(); });
-        }
-
-        private IEnumerator Start()
-        {
-            onIntroBegin.Invoke();
-
-            yield return new WaitForSeconds(background.GetCurrentAnimLength());
-
-            onIntroEnd.Invoke();
-
-            yield return null;
         }
 
         private void Update()

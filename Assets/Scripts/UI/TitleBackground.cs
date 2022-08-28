@@ -16,8 +16,8 @@ namespace CoronaStriker.UI
         {
             base.Reset();
 
-            introTriggerName = "Introduction";
-            titleTriggerName = "Main Title";
+            introTriggerName = "";
+            titleTriggerName = "";
         }
 
         private void Awake()

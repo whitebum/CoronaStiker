@@ -1,9 +1,8 @@
-using CoronaStriker.Core.Effects;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using CoronaStriker.Core.Utils;
+using CoronaStriker.Core.Effects;
 
 namespace CoronaStriker.Core.Actors
 {
@@ -20,11 +19,14 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] private BaseEffect healEffect;
         [SerializeField] private BaseEffect shieldEffect;
         [SerializeField] private BaseEffect invincibleEffect;
-        [SerializeField] private FlashEffect flashEffect;
  
         [Space(10.0f)]
         [SerializeField] private int healthLayerIdx;
         [SerializeField] private int stateLayerIdx;
+
+        [SerializeField] private string healthTrigger;
+        [SerializeField] private string hurtTrigger;
+        [SerializeField] private string deadTrigger;
 
         [Space(10.0f)]
         [SerializeField] private HealthEvent onHeal;
@@ -32,11 +34,19 @@ namespace CoronaStriker.Core.Actors
         protected override void Reset()
         {
             base.Reset();
+
+            healthTrigger = "";
+            hurtTrigger = "";
+            deadTrigger = "";
         }
 
         protected override void Awake()
         {
             base.Awake();
+
+            animTriggers.Add(healthTrigger, new AnimationArgs { argName = healthTrigger, argHash = Animator.StringToHash(healthTrigger) });
+            animTriggers.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
+            animTriggers.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
 
             onHeal.AddListener((arg) => { UpdateHealth(); });
             onHeal.AddListener((arg) => { if (healEffect) healEffect.OnEffectOnce(); });
@@ -72,8 +82,8 @@ namespace CoronaStriker.Core.Actors
                     isHurt = false;
                     hurtInvincibleTimer = 0.0f;
 
-                    if (animTriggers.ContainsKey(idleTrigger))
-                        animator?.ResetTrigger(animTriggers[idleTrigger]);
+                    if (animTriggers.ContainsKey(hurtTrigger))
+                        animator?.SetBool(animTriggers[hurtTrigger], false);
                 }
             }
 
@@ -108,7 +118,7 @@ namespace CoronaStriker.Core.Actors
             }
         }
 
-        public override void TakeDamage(float damage)
+        public void TakeDamage(float damage)
         {
             if (isShield)
             {
@@ -142,8 +152,8 @@ namespace CoronaStriker.Core.Actors
                 isHurt = false;
                 hurtInvincibleTimer = 0.0f;
 
-                if (animTriggers.ContainsKey(idleTrigger))
-                    animator?.SetTrigger(animTriggers[idleTrigger]);
+                if (animTriggers.ContainsKey(hurtTrigger))
+                    animator?.SetTrigger(animTriggers[hurtTrigger]);
             }
 
             isInvincible = false;
@@ -159,10 +169,8 @@ namespace CoronaStriker.Core.Actors
                 isHurt = true;
                 hurtInvincibleTimer = time;
 
-                //if (animTriggers.ContainsKey(hurtTrigger))
-                //    animator?.SetTrigger(animTriggers[hurtTrigger]);
-
-                animator?.SetTrigger("Hurt");
+                if (animTriggers.ContainsKey(hurtTrigger))
+                    animator?.SetBool(animTriggers[hurtTrigger], true);
             }
         }
 

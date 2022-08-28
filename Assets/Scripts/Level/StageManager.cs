@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CoronaStriker.Core.Effects;
+using CoronaStriker.UI;
 
 namespace CoronaStriker.Level
 {
@@ -10,28 +12,40 @@ namespace CoronaStriker.Level
 
         [SerializeField] private bool isBossArrives;
 
+        [Header("스테이지 백그라운드")]
+        [SerializeField] private StageBackground background;
+
+        [Header("게임 타이머와 제한 시간")]
         [SerializeField] private float gameTime;
         [SerializeField] private float maxGameTime;
 
-        [SerializeField] private GameObject scoreViewer;
-        [SerializeField] private GameObject maxScoreViewer;
-        [SerializeField] private GameObject playerLifeViewer;
+        [Header("플레이어 HUD")]
+        [SerializeField] private PlayerHUD playerHUD;
 
-        [SerializeField] private GameObject background;
+        [Header("스테이지 메시지")]
+        [SerializeField] private GameMessage stageStart;
+        [SerializeField] private GameMessage stageClear;
+        [SerializeField] private GameMessage stageFail;
 
-        [SerializeField] private GameObject stageStart;
-        [SerializeField] private GameObject stageClear;
-        [SerializeField] private GameObject stageFail;
+        [Header("클리어 이펙트")]
+        [SerializeField] private BaseEffect clearEffect;
 
-        [SerializeField] private GameObject clearEffect;
-
+        [Header("스테이지 콜백")]
+        [SerializeField] private StageEvent onReady;
         [SerializeField] private StageEvent onStart;
-        [SerializeField] private StageEvent onClear;
-        [SerializeField] private StageEvent onFail;
+        [SerializeField] private StageEvent onClearStart;
+        [SerializeField] private StageEvent onClearEnd;
+        [SerializeField] private StageEvent onFailStart;
+        [SerializeField] private StageEvent onFailEnd;
 
         private void Awake()
         {
             Instance = this;
+        }
+
+        private void Update()
+        {
+
         }
     }
 }
