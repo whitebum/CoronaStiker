@@ -12,14 +12,28 @@ namespace CoronaStriker.UI
 
         protected override void Reset()
         {
+            base.Reset();
+
             infectionTrigger = "";
             cureTrigger = "";
         }
 
         protected override void Awake()
         {
+            base.Awake();
+
             AddTrigger(infectionTrigger);
             AddTrigger(cureTrigger);
+        }
+
+        public void Infection()
+        {
+            SetTrigger(infectionTrigger);
+        }
+
+        public void Cure()
+        {
+            SetTrigger(cureTrigger);
         }
     }
 }

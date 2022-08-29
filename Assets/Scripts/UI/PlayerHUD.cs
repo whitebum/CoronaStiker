@@ -6,8 +6,8 @@ namespace CoronaStriker.UI
 {
     public class PlayerHUD : MonoBehaviour
     {
-        [SerializeField] private TimeViewer timeViewer;
-        [SerializeField] private ScoreViewer scoreViewer;
-        [SerializeField] private LifeViewer lifeViewer;
+        public TimeViewer timeViewer;
+        public ScoreViewer scoreViewer;
+        public LifeViewer lifeViewer;
     }
 }

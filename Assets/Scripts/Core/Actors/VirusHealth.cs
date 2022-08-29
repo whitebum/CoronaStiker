@@ -3,62 +3,103 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using CoronaStriker.Core.Utils;
+using CoronaStriker.Core.Effects;
 
 namespace CoronaStriker.Core.Actors
 {
     public class VirusHealth : HealthSystem
     {
+        [SerializeField] private int maxHP;
+        [SerializeField] private int curHP;
+
         [Space(10.0f)]
-        [SerializeField] private int healthLayerIndex;
-        [SerializeField] private int stateLayerIndex;
+        [SerializeField] private bool isDead;
+
+        [Space(10.0f)]
+        [SerializeField] private bool isInvincible;
+        [SerializeField] private float invincibleTimer;
+
+        [Space(10.0f)]
+        [SerializeField] private Animator animator;
+
+        [Space(5.0f)]
+        [SerializeField] private int healthLayerIdx;
+        [SerializeField] private int stateLayerIdx;
+
+        private Dictionary<string, AnimationArgs> animatorArgs;
 
         [Space(5.0f)]
         [SerializeField] private string hurtTrigger;
         [SerializeField] private string deadTrigger;
 
-        protected override void Reset()
+        [Space(10.0f)]
+        //public HealthEvent onHeal;
+        //public HealthEvent onHurt;
+        //public HealthEvent onDead;
+        public UnityEvent onHeal;
+        public UnityEvent onHurt;
+        public UnityEvent onDead;
+
+        private void Reset()
         {
-            base.Reset();
+            maxHP = curHP = 5;
+
+            animator = GetComponent<Animator>();
 
             hurtTrigger = "";
             deadTrigger = "";
+
+            onHeal = new UnityEvent();
+            onHurt = new UnityEvent();
+            onDead = new UnityEvent();
         }
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            maxHP = curHP = 5;
 
-            healthLayerIndex = animator.GetLayerIndex("Health Layer");
-            healthLayerIndex = animator.GetLayerIndex("State Layer");
+            isDead = false;
 
-            animTriggers.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
-            animTriggers.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
-        }
-
-        public void GetInvincible(float time = 6.0f)
-        {
             isInvincible = false;
-            invincibleTimer = time;
+            invincibleTimer = 0.0f;
+
+            animatorArgs = new Dictionary<string, AnimationArgs>();
+
+            healthLayerIdx = animator.GetLayerIndex("Health Layer");
+            stateLayerIdx = animator.GetLayerIndex("State Layer");
+
+            animatorArgs.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
+            animatorArgs.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
+
+            onHurt = onHurt ?? new UnityEvent();
+            onDead = onDead ?? new UnityEvent();
+
+            onDead.AddListener(() => gameObject.SetActive(false));
         }
 
-        public void Kill()
-        {
-            StartCoroutine(GetDead());
-        }
-
-        private IEnumerator GetDead()
+        public void GetDamage(int damage)
         {
             if (!isDead)
             {
-                curHP = 0.0f;
-                isDead = true;
+                curHP -= damage;
 
-                if (animTriggers.ContainsKey(deadTrigger)) animator?.SetTrigger(animTriggers[deadTrigger]);
+                if (curHP <= 0)
+                {
+                    curHP = 0;
 
-                yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
-
-                onDead.Invoke(new HealthEventArgs());
+                    onDead.Invoke();
+                }
+                else
+                {
+                    if (animatorArgs?.ContainsKey(hurtTrigger) == true)
+                    {
+                        if (animator?.GetBool(animatorArgs[hurtTrigger]) == false)
+                            animator?.SetBool(animatorArgs[hurtTrigger], true);
+                    }
+                }
             }
         }
+
+        
     }
 }

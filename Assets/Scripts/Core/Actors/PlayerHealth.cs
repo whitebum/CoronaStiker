@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using CoronaStriker.Core.Utils;
@@ -8,9 +9,19 @@ namespace CoronaStriker.Core.Actors
 {
     public class PlayerHealth : HealthSystem
     {
+        [SerializeField] private int maxHP;
+        [SerializeField] private int curHP;
+
+        [Space(10.0f)]
+        [SerializeField] private bool isDead;
+
         [Space(10.0f)]
         [SerializeField] private bool isHurt;
         [SerializeField] private float hurtInvincibleTimer;
+
+        [Space(10.0f)]
+        [SerializeField] private bool isInvincible;
+        [SerializeField] private float invincibleTimer;
 
         [Space(10.0f)]
         [SerializeField] private bool isShield;
@@ -19,50 +30,87 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] private BaseEffect healEffect;
         [SerializeField] private BaseEffect shieldEffect;
         [SerializeField] private BaseEffect invincibleEffect;
- 
+        [SerializeField] private BaseEffect boostEffect;
+
         [Space(10.0f)]
+        [SerializeField] private Animator animator;
+
+        [Space(5.0f)]
         [SerializeField] private int healthLayerIdx;
         [SerializeField] private int stateLayerIdx;
 
+        private Dictionary<string, AnimationArgs> animatorArgs;
+
+        [Space(5.0f)]
         [SerializeField] private string healthTrigger;
         [SerializeField] private string hurtTrigger;
         [SerializeField] private string deadTrigger;
 
         [Space(10.0f)]
-        [SerializeField] private HealthEvent onHeal;
+        //public HealthEvent onHeal;
+        //public HealthEvent onHurt;
+        //public HealthEvent onDead;
+        public UnityEvent onHeal;
+        public UnityEvent onHurt;
+        public UnityEvent onDead;
 
-        protected override void Reset()
+        private void Reset()
         {
-            base.Reset();
+            maxHP = curHP = 5;
+
+            var temp = transform.Find("Effects");
+
+            healEffect = temp.transform.Find("Heal").GetComponent<BaseEffect>();
+            shieldEffect = temp.transform.Find("Shield").GetComponent<BaseEffect>();
+            invincibleEffect = temp.transform.Find("Invincible").GetComponent<BaseEffect>();
+            boostEffect = temp.transform.Find("Boost").GetComponent<BaseEffect>();
+
+            animator = GetComponent<Animator>();
 
             healthTrigger = "";
             hurtTrigger = "";
             deadTrigger = "";
+
+            onHeal = new UnityEvent();
+            onHurt = new UnityEvent();
+            onDead = new UnityEvent();
         }
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            maxHP = curHP = 5;
 
-            animTriggers.Add(healthTrigger, new AnimationArgs { argName = healthTrigger, argHash = Animator.StringToHash(healthTrigger) });
-            animTriggers.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
-            animTriggers.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
+            isDead = false;
 
-            onHeal.AddListener((arg) => { UpdateHealth(); });
-            onHeal.AddListener((arg) => { if (healEffect) healEffect.OnEffectOnce(); });
+            isInvincible = false;
+            invincibleTimer = 0.0f;
 
-            onHurt.AddListener((arg) => { UpdateHealth(); });
-            onHurt.AddListener((arg) => { });
+            isHurt = false;
+            hurtInvincibleTimer = 0.0f;
 
-            onDead.AddListener((arg) => { gameObject.SetActive(false); });
+            animatorArgs = new Dictionary<string, AnimationArgs>();
+
+            healthLayerIdx = animator.GetLayerIndex("Health Layer");
+            stateLayerIdx = animator.GetLayerIndex("State Layer");
+
+            animatorArgs.Add(healthTrigger, new AnimationArgs { argName = healthTrigger, argHash = Animator.StringToHash(healthTrigger) });
+            animatorArgs.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
+            animatorArgs.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
+
+            onHeal = onHeal ?? new UnityEvent();
+            onHurt = onHurt ?? new UnityEvent();
+            onDead = onDead ?? new UnityEvent();
+
+            onHeal.AddListener(() => UpdateSprite());
+            onHeal.AddListener(() => healEffect?.OnEffectOnce());
+
+            onHurt.AddListener(() => UpdateSprite());
+            onHurt.AddListener(() => GetHurt(2.0f));
+
+            onDead.AddListener(() => gameObject.SetActive(false));
         }
 
-        private void Start()
-        {
-            UpdateHealth();
-        }
-
-        protected override void Update()
+        private void Update()
         {
             if (isInvincible)
             {
@@ -70,8 +118,6 @@ namespace CoronaStriker.Core.Actors
                 {
                     isInvincible = false;
                     invincibleTimer = 0.0f;
-
-                    invincibleEffect.OffEffect();
                 }
             }
 
@@ -82,125 +128,90 @@ namespace CoronaStriker.Core.Actors
                     isHurt = false;
                     hurtInvincibleTimer = 0.0f;
 
-                    if (animTriggers.ContainsKey(hurtTrigger))
-                        animator?.SetBool(animTriggers[hurtTrigger], false);
+                    if (animatorArgs?.ContainsKey(hurtTrigger) == true)
+                        animator?.SetBool(animatorArgs[hurtTrigger], false);
                 }
             }
+#if UNITY_EDITOR
 
             if (Input.GetKeyDown(KeyCode.KeypadPlus))
-                TakeHealth(1.0f);
+                GetHealth(1);
 
             if (Input.GetKeyDown(KeyCode.KeypadMinus))
-                TakeDamage(1.0f);
+                GetDamage(1);
+
+            if (Input.GetKeyDown(KeyCode.Return))
+                GetInvincible(10.0f);
+#endif
         }
 
-        public void UpdateHealth()
+        public void GetHealth(int health)
         {
-            if (animTriggers.ContainsKey(healthTrigger))
-                animator?.SetInteger(animTriggers[healthTrigger], (int)curHP);
-        }
-
-        public void TakeHealth(float health)
-        {
-            if (!isDead)
+            if (curHP < maxHP)
             {
-                if (curHP >= maxHP)
-                    return;
+                curHP += health;
 
-                var calHealth = curHP + health;
-
-                if (calHealth >= maxHP)
+                if (curHP > maxHP)
                     curHP = maxHP;
-                else
-                    curHP = calHealth;
 
-                onHeal.Invoke(new HealthEventArgs());
+                onHeal.Invoke();
             }
         }
 
-        public void TakeDamage(float damage)
+        public void GetDamage(int damage)
         {
-            if (isShield)
+            if (!isHurt && !isInvincible && !isDead)
             {
-                isShield = false;
-                shieldEffect.OffEffect();
-            }
-            else if (!isHurt && !isInvincible && !isDead)
-            {
-                var calHealth = curHP - damage;
+                curHP -= damage;
 
-                // Dead
-                if (calHealth <= 0.0f)
+                if (curHP <= 0)
                 {
-                    Kill();
+                    curHP = 0;
+
+                    GetDeath();
                 }
                 else
                 {
-                    curHP = calHealth;
-
-                    SetHurtInvincible(2.0f);
-                    onHurt.Invoke(new HealthEventArgs());
+                    GetHurt(2.0f);
+                    onHurt.Invoke();
                 }
             }
+        }
+
+        public void UpdateSprite()
+        {
+            if (animatorArgs?.ContainsKey(healthTrigger) == true)
+                animator?.SetInteger(animatorArgs[healthTrigger], curHP);
+        }
+
+        public void GetHurt(float time = 2.0f)
+        {
+            isHurt = true;
+            hurtInvincibleTimer = time;
+
+            if (animatorArgs?.ContainsKey(hurtTrigger) == true)
+                animator?.SetBool(animatorArgs[hurtTrigger], true);
         }
 
         public void GetInvincible(float time)
         {
-            // if player hurted
-            if (isHurt)
-            {
-                isHurt = false;
-                hurtInvincibleTimer = 0.0f;
-
-                if (animTriggers.ContainsKey(hurtTrigger))
-                    animator?.SetTrigger(animTriggers[hurtTrigger]);
-            }
-
-            isInvincible = false;
+            isInvincible = true;
             invincibleTimer = time;
 
-            invincibleEffect.OnEffect();
+            invincibleEffect?.OnEffect();
         }
 
-        public void SetHurtInvincible(float time = 10.0f)
-        {
-            if (!isHurt)
-            {
-                isHurt = true;
-                hurtInvincibleTimer = time;
-
-                if (animTriggers.ContainsKey(hurtTrigger))
-                    animator?.SetBool(animTriggers[hurtTrigger], true);
-            }
-        }
-
-        public void GetShield()
-        {
-            if (!isShield)
-            {
-                isShield = true;
-                shieldEffect.OnEffect();
-            }
-        }
-
-        public void Kill()
-        {
-            StartCoroutine(GetDead());
-        }
-
-        private IEnumerator GetDead()
+        public void GetDeath()
         {
             if (!isDead)
             {
-                curHP = 0.0f;
                 isDead = true;
 
-                animator.SetTrigger(animTriggers[deadTrigger]);
+                if (animatorArgs?.ContainsKey(deadTrigger) == true)
+                    animator?.SetTrigger(animatorArgs[deadTrigger]);
 
-                yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
-
-                onDead.Invoke(new HealthEventArgs());
+                Invoke(nameof(onDead.Invoke), animator.GetCurrentAnimatorStateInfo(1).length);
             }
         }
-    }
+    }   
 }

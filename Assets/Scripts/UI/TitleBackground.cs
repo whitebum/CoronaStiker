@@ -20,8 +20,10 @@ namespace CoronaStriker.UI
             titleTriggerName = "";
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             AddTrigger(introTriggerName);
             AddTrigger(titleTriggerName);
         }

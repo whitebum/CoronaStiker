@@ -27,13 +27,13 @@ namespace CoronaStriker.UI
                 animTriggers.Add(triggerName, new AnimationArgs { argName = triggerName, argHash = Animator.StringToHash(triggerName) });
         }
 
-        protected void SetTrigger(string triggerName)
+        public void SetTrigger(string triggerName)
         {
             if (animTriggers.ContainsKey(triggerName))
                 animator?.SetTrigger(animTriggers[triggerName]);
         }
 
-        protected float GetCurrentAnimLength()
+        public float GetCurrentAnimLength()
         {
             return animator.GetCurrentAnimatorStateInfo(0).length;
         }

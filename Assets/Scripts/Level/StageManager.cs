@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CoronaStriker.Core.Actors;
 using CoronaStriker.Core.Effects;
 using CoronaStriker.UI;
 
@@ -10,6 +11,9 @@ namespace CoronaStriker.Level
     {
         public static StageManager Instance { get; private set; }
 
+        [SerializeField] private StageState stageState;
+        
+        [Space(5.0f)]
         [SerializeField] private bool isBossArrives;
 
         [Header("스테이지 백그라운드")]
@@ -20,6 +24,7 @@ namespace CoronaStriker.Level
         [SerializeField] private float maxGameTime;
 
         [Header("플레이어 HUD")]
+        [SerializeField] private PlayerHealth playerHealth;
         [SerializeField] private PlayerHUD playerHUD;
 
         [Header("스테이지 메시지")]
@@ -45,7 +50,19 @@ namespace CoronaStriker.Level
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                clearEffect.OnEffectOnce();
+                Invoke(nameof(Temp), 0.75f);
+            }
+        }
 
+        public void Temp()
+        { background.Cure(); }
+
+        public void ChangeState(StageState state)
+        {
+            
         }
     }
 }
