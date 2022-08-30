@@ -21,11 +21,9 @@ namespace CoronaStriker.UI
 
         public void UpdateViewer(int value)
         {
-            Debug.Log("Temp");
-
             for (int idx = 0; idx < hearts.Length; ++idx)
             {
-                if (idx > value - 1)
+                if (idx > (value - 1))
                     hearts[idx].UpdateIcon(false);
                 else
                     hearts[idx].UpdateIcon(true);

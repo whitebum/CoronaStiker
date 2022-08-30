@@ -36,15 +36,21 @@ namespace CoronaStriker.Level
             onIntroEnd = onIntroEnd ?? new UnityEvent();
 
             onIntroBegin.AddListener(() => { isEndedIntro = false; });
-            onIntroBegin.AddListener(() => { /*background.SetTrigger("Introduction");*/ });
+            onIntroBegin.AddListener(() => { background.IntruductionScreen(); });
             onIntroBegin.AddListener(() => { titleLogo.gameObject.SetActive(false); });
             onIntroBegin.AddListener(() => { pressLogo.gameObject.SetActive(false); });
+            onIntroBegin.AddListener(() => { StartCoroutine(TurnTitle()); });
 
             onIntroEnd.AddListener(() => { isEndedIntro = true; });
-            onIntroEnd.AddListener(() => { /*background.SetTrigger("Main Title");*/ });
+            onIntroEnd.AddListener(() => { background.TitleScreen(); });
             onIntroEnd.AddListener(() => { titleLogo.gameObject.SetActive(true); });
             onIntroEnd.AddListener(() => { pressLogo.gameObject.SetActive(true); });
             onIntroEnd.AddListener(() => { whitePanel.FadeOutEffect(); });
+        }
+
+        private void Start()
+        {
+            onIntroBegin.Invoke();
         }
 
         private void Update()
@@ -62,9 +68,15 @@ namespace CoronaStriker.Level
 
                 if (isEndedIntro)
                 {
-                    LevelManager.GetInstance().LoadLevel("MenuScene");
+                    SceneManager.GetInstance().LoadLevel("MenuScene");
                 }
             }
+        }
+
+        private IEnumerator TurnTitle()
+        {
+            yield return new WaitForSecondsRealtime(background.GetCurrentAnimLength());
+            onIntroEnd.Invoke();
         }
     }
 }

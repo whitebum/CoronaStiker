@@ -23,5 +23,10 @@ namespace CoronaStriker.Level
         {
             (this.playerInitial, this.playerScore) = (playerInitial, $"{playerScore:000000}");
         }
+
+        public static explicit operator string(PlayerRecord record)
+        {
+            return $"{record.playerInitial} {record.playerScore}";
+        }
     }
 }

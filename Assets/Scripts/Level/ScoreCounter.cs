@@ -1,18 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class ScoreCounter : MonoBehaviour
+namespace CoronaStriker.Level
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ScoreCounter : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private int curScore;
+        [SerializeField] private int maxScore;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public UnityEvent<int> onValueChanged;
+
+        private void Reset()
+        {
+            onValueChanged = new UnityEvent<int>();
+        }
+
+        private void Awake()
+        {
+            onValueChanged = onValueChanged ?? new UnityEvent<int>();
+        }
+
+        public void GetScore(int value)
+        {
+            curScore += value;
+
+            if (curScore > maxScore)
+                curScore = maxScore;
+
+            onValueChanged.Invoke(curScore);
+        }
     }
 }

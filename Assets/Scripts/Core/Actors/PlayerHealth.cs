@@ -50,9 +50,9 @@ namespace CoronaStriker.Core.Actors
         //public HealthEvent onHeal;
         //public HealthEvent onHurt;
         //public HealthEvent onDead;
-        public UnityEvent onHeal;
-        public UnityEvent onHurt;
-        public UnityEvent onDead;
+        public UnityEvent<int> onHeal;
+        public UnityEvent<int> onHurt;
+        public UnityEvent<int> onDead;
 
         private void Reset()
         {
@@ -71,9 +71,9 @@ namespace CoronaStriker.Core.Actors
             hurtTrigger = "";
             deadTrigger = "";
 
-            onHeal = new UnityEvent();
-            onHurt = new UnityEvent();
-            onDead = new UnityEvent();
+            onHeal = new UnityEvent<int>();
+            onHurt = new UnityEvent<int>();
+            onDead = new UnityEvent<int>();
         }
 
         private void Awake()
@@ -97,17 +97,9 @@ namespace CoronaStriker.Core.Actors
             animatorArgs.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
             animatorArgs.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
 
-            onHeal = onHeal ?? new UnityEvent();
-            onHurt = onHurt ?? new UnityEvent();
-            onDead = onDead ?? new UnityEvent();
-
-            onHeal.AddListener(() => UpdateSprite());
-            onHeal.AddListener(() => healEffect?.OnEffectOnce());
-
-            onHurt.AddListener(() => UpdateSprite());
-            onHurt.AddListener(() => GetHurt(2.0f));
-
-            onDead.AddListener(() => gameObject.SetActive(false));
+            onHeal = onHeal ?? new UnityEvent<int>();
+            onHurt = onHurt ?? new UnityEvent<int>();
+            onDead = onDead ?? new UnityEvent<int>();
         }
 
         private void Update()
@@ -154,7 +146,9 @@ namespace CoronaStriker.Core.Actors
                 if (curHP > maxHP)
                     curHP = maxHP;
 
-                onHeal.Invoke();
+                UpdateSprite();
+
+                onHeal?.Invoke(curHP);
             }
         }
 
@@ -164,16 +158,27 @@ namespace CoronaStriker.Core.Actors
             {
                 curHP -= damage;
 
+                UpdateSprite();
+
                 if (curHP <= 0)
                 {
                     curHP = 0;
+                    isDead = true;
 
-                    GetDeath();
+                    if (animatorArgs?.ContainsKey(deadTrigger) == true)
+                        animator?.SetTrigger(animatorArgs[deadTrigger]);
+
+                    onDead?.Invoke(curHP);
                 }
                 else
                 {
-                    GetHurt(2.0f);
-                    onHurt.Invoke();
+                    isHurt = true;
+                    hurtInvincibleTimer = 2.0f;
+
+                    if (animatorArgs?.ContainsKey(hurtTrigger) == true)
+                        animator?.SetBool(animatorArgs[hurtTrigger], true);
+
+                    onHurt?.Invoke(curHP);
                 }
             }
         }
@@ -186,11 +191,7 @@ namespace CoronaStriker.Core.Actors
 
         public void GetHurt(float time = 2.0f)
         {
-            isHurt = true;
-            hurtInvincibleTimer = time;
-
-            if (animatorArgs?.ContainsKey(hurtTrigger) == true)
-                animator?.SetBool(animatorArgs[hurtTrigger], true);
+            
         }
 
         public void GetInvincible(float time)
@@ -203,15 +204,7 @@ namespace CoronaStriker.Core.Actors
 
         public void GetDeath()
         {
-            if (!isDead)
-            {
-                isDead = true;
-
-                if (animatorArgs?.ContainsKey(deadTrigger) == true)
-                    animator?.SetTrigger(animatorArgs[deadTrigger]);
-
-                Invoke(nameof(onDead.Invoke), animator.GetCurrentAnimatorStateInfo(1).length);
-            }
+            
         }
     }   
 }

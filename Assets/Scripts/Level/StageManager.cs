@@ -11,7 +11,7 @@ namespace CoronaStriker.Level
     {
         public static StageManager Instance { get; private set; }
 
-        [SerializeField] private StageState stageState;
+        [SerializeField] private StageState curState;
         
         [Space(5.0f)]
         [SerializeField] private bool isBossArrives;
@@ -23,9 +23,13 @@ namespace CoronaStriker.Level
         [SerializeField] private float gameTime;
         [SerializeField] private float maxGameTime;
 
+        [Header("")]
+        public GameTimer gameTimer;
+        public ScoreCounter scoreCounter;
+
         [Header("플레이어 HUD")]
-        [SerializeField] private PlayerHealth playerHealth;
-        [SerializeField] private PlayerHUD playerHUD;
+        public PlayerHealth playerHealth;
+        [SerializeField] private PlayerHUDManager playerHUD;
 
         [Header("스테이지 메시지")]
         [SerializeField] private GameMessage stageStart;
@@ -43,18 +47,48 @@ namespace CoronaStriker.Level
         [SerializeField] private StageEvent onFailStart;
         [SerializeField] private StageEvent onFailEnd;
 
+        private void Reset()
+        {
+            background = GetComponentInChildren<StageBackground>();
+
+            gameTimer = GetComponentInChildren<GameTimer>();
+            scoreCounter = GetComponentInChildren<ScoreCounter>();
+
+            onReady = new StageEvent();
+            onStart = new StageEvent();
+            onClearStart = new StageEvent();
+            onClearEnd = new StageEvent();
+            onFailStart = new StageEvent();
+            onFailEnd = new StageEvent();
+        }
+
         private void Awake()
         {
             Instance = this;
+
+            onReady = onReady ?? new StageEvent();
+            onStart = onStart ?? new StageEvent();
+            onClearStart = onClearStart ?? new StageEvent();
+            onClearEnd = onClearEnd ?? new StageEvent();
+            onFailStart = onFailStart ?? new StageEvent();
+            onFailEnd = onFailEnd ?? new StageEvent();
         }
 
         private void Update()
         {
+            if (curState == StageState.ON)
+            {
+                gameTimer.GetTime();
+            }
+
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 clearEffect.OnEffectOnce();
                 Invoke(nameof(Temp), 0.75f);
             }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                scoreCounter?.GetScore(Random.Range(0, 1000));
         }
 
         public void Temp()
@@ -62,7 +96,32 @@ namespace CoronaStriker.Level
 
         public void ChangeState(StageState state)
         {
-            
+            switch ((curState = state))
+            {
+                case StageState.READY:
+                    {
+                        onReady.Invoke();
+                    }
+                    break;
+                case StageState.ON:
+                    {
+                        onStart.Invoke();
+                    }
+                    break;
+                case StageState.CLEAR:
+                    {
+                        onClearStart.Invoke();
+                    }
+                    break;
+                case StageState.FAIL:
+                    {
+                        onFailStart.Invoke();
+                    }
+                    break;
+                case StageState.DEFAULT:
+                default:
+                    break;
+            }
         }
     }
 }

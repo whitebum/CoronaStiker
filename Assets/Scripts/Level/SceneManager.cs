@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace CoronaStriker.Level
 {
-    public sealed class LevelManager : Singleton<LevelManager>
+    public sealed class SceneManager : Singleton<SceneManager>
     {
         [SerializeField] private CanvasHandler canvas;
         [SerializeField] private FadeableUI background;
@@ -31,12 +31,20 @@ namespace CoronaStriker.Level
             background.gameObject.SetActive(true);
             yield return StartCoroutine(background.AppearCoroutine());
 
-            var task = SceneManager.LoadSceneAsync(levelName);
+            //UnityEngine.SceneManagement.SceneManager. = false;
+            //var levelIdx = UnityEngine.SceneManagement.SceneManager.GetSceneByName(levelName);
+            //var loadTask = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(levelIdx.buildIndex, LoadSceneMode.Single);
+
+            var loadTask = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Single);
+            //loadTask.allowSceneActivation = false;
 
             while (true)
             {
-                if (task.isDone)
+                if (loadTask.isDone)
                 {
+
+                    //loadTask.allowSceneActivation = true;
+
                     yield return StartCoroutine(background.DisappearCoroutine());
 
                     yield break;

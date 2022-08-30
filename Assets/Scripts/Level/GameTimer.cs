@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CoronaStriker.Level
 {
@@ -9,9 +10,12 @@ namespace CoronaStriker.Level
     {
         public TimeSpan time;
 
-        public void Update()
+        public UnityEvent<int> onValueChanged;
+
+        public void GetTime()
         {
             time = time.Add(TimeSpan.FromSeconds(Time.deltaTime));
+            onValueChanged?.Invoke(time.Seconds);
         }
     }
 }

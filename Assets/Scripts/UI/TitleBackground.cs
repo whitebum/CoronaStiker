@@ -9,23 +9,33 @@ namespace CoronaStriker.UI
     public class TitleBackground : BaseBackground
     {
         [Header("애니메이션 트리거")]
-        [SerializeField] private string introTriggerName;
-        [SerializeField] private string titleTriggerName;
+        [SerializeField] private string introTrigger;
+        [SerializeField] private string titleTrigger;
 
         protected override void Reset()
         {
             base.Reset();
 
-            introTriggerName = "";
-            titleTriggerName = "";
+            introTrigger = "";
+            titleTrigger = "";
         }
 
         protected override void Awake()
         {
             base.Awake();
 
-            AddTrigger(introTriggerName);
-            AddTrigger(titleTriggerName);
+            AddTrigger(introTrigger);
+            AddTrigger(titleTrigger);
+        }
+
+        public void IntruductionScreen()
+        {
+            SetTrigger(introTrigger);
+        }
+
+        public void TitleScreen()
+        {
+            SetTrigger(titleTrigger);
         }
     }
 }

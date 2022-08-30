@@ -31,7 +31,7 @@ namespace CoronaStriker.UI
             panel.gameObject.SetActive(true);
             yield return StartCoroutine(panel.FadeInCoroutine());
 
-            LevelManager.GetInstance().LoadLevel("StageScene");
+            SceneManager.GetInstance().LoadLevel("StageScene");
         }
     }
 }
