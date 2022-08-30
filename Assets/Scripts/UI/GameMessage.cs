@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CoronaStriker.Core.Utils;
 
 namespace CoronaStriker.UI
 {
@@ -12,53 +13,58 @@ namespace CoronaStriker.UI
         [SerializeField] private float waitTime;
         [SerializeField] private bool isShouldDisable = true;
 
+        private Dictionary<string, AnimationArgs> animationArgs;
+
         [Space(5.0f)]
-        [SerializeField] private string openTriggerName = "Open";
-        private int openTriggerHash;
-        [SerializeField] private string closeTriggerName = "Close";
-        private int closeTriggerHash;
+        [SerializeField] private string openTrigger = "Open";
+        [SerializeField] private string closeTrigger = "Close";
 
         private void Reset()
         {
             animator = GetComponent<Animator>();
+
+            openTrigger = "";
+            closeTrigger = "";
         }
 
         private void Awake()
         {
             animator = animator ?? GetComponent<Animator>();
 
-            openTriggerHash = Animator.StringToHash(openTriggerName);
-            closeTriggerHash = Animator.StringToHash(closeTriggerName);
+            animationArgs = new Dictionary<string, AnimationArgs>();
+
+            animationArgs.Add(openTrigger, new AnimationArgs { argName = openTrigger, argHash = Animator.StringToHash(openTrigger) });
+            animationArgs.Add(closeTrigger, new AnimationArgs { argName = closeTrigger, argHash = Animator.StringToHash(closeTrigger) });
         }
 
-        private void Start()
+        public void OpenMessage()
         {
-            StartCoroutine(TestMessageCoroutine());
+            if (!gameObject.activeSelf)
+                gameObject.SetActive(true);
+
+            StartCoroutine(OpenMessageCoroutine());
         }
 
-        public void TestMessage()
+        public void CloseMessage()
         {
-            gameObject.SetActive(true);
-
-            StartCoroutine(TestMessageCoroutine());
+            StartCoroutine(OpenMessageCoroutine());
         }
 
-        public IEnumerator TestMessageCoroutine()
+        public IEnumerator OpenMessageCoroutine()
         {
-            animator.SetTrigger(openTriggerHash);
+            if (animationArgs?.ContainsKey(openTrigger) == true)
+                animator?.SetTrigger(animationArgs[openTrigger]);
 
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
 
-            if (isShouldDisable)
-            {
-                yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSecondsRealtime(waitTime);
 
-                animator.SetTrigger(closeTriggerHash);
+            if (animationArgs?.ContainsKey(closeTrigger) == true)
+                animator?.SetTrigger(animationArgs[closeTrigger]);
 
-                yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
 
-                gameObject.SetActive(false);
-            }
+            gameObject.SetActive(false);
         }
     }
 }

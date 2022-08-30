@@ -4,21 +4,23 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Effects
 {
+    [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(Animator))]
     public class BaseEffect : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private Animator animator;
+        [SerializeField] protected SpriteRenderer spriteRenderer;
+        [SerializeField] protected Animator animator;
 
         private void Reset()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            animator = GetComponent<Animator>();
+            spriteRenderer  = GetComponent<SpriteRenderer>();
+            animator        = GetComponent<Animator>();
         }
 
         private void Awake()
         {
-            spriteRenderer = spriteRenderer ?? GetComponent<SpriteRenderer>();
-            animator = animator ?? GetComponent<Animator>();
+            spriteRenderer  = spriteRenderer ?? GetComponent<SpriteRenderer>();
+            animator        = animator ?? GetComponent<Animator>();
         }
 
         public void OnEffect()

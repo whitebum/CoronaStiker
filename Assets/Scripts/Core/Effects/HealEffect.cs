@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Core.Actors
+namespace CoronaStriker.Core.Effects
 {
-    public interface IDeadable
+    public class HealEffect : BaseEffect
     {
-        void GetDeath();
+        
     }
 }

@@ -29,12 +29,10 @@ namespace CoronaStriker.Level
 
         [Header("플레이어 HUD")]
         public PlayerHealth playerHealth;
-        [SerializeField] private PlayerHUDManager playerHUD;
+        [SerializeField] private PlayerHUD playerHUD;
 
-        [Header("스테이지 메시지")]
-        [SerializeField] private GameMessage stageStart;
-        [SerializeField] private GameMessage stageClear;
-        [SerializeField] private GameMessage stageFail;
+        [Header("스테이지 HUD")]
+        [SerializeField] private MessageHUD gameMessages;
 
         [Header("클리어 이펙트")]
         [SerializeField] private BaseEffect clearEffect;
@@ -54,6 +52,10 @@ namespace CoronaStriker.Level
             gameTimer = GetComponentInChildren<GameTimer>();
             scoreCounter = GetComponentInChildren<ScoreCounter>();
 
+            playerHUD = GetComponentInChildren<PlayerHUD>();
+
+            gameMessages = GetComponentInChildren<MessageHUD>();
+
             onReady = new StageEvent();
             onStart = new StageEvent();
             onClearStart = new StageEvent();
@@ -72,6 +74,13 @@ namespace CoronaStriker.Level
             onClearEnd = onClearEnd ?? new StageEvent();
             onFailStart = onFailStart ?? new StageEvent();
             onFailEnd = onFailEnd ?? new StageEvent();
+
+            playerHealth.onDead.AddListener((value) => { StartCoroutine(GameOverCoroutine()); });
+        }
+
+        private void Start()
+        {
+            ChangeState(StageState.READY);
         }
 
         private void Update()
@@ -81,18 +90,9 @@ namespace CoronaStriker.Level
                 gameTimer.GetTime();
             }
 
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                clearEffect.OnEffectOnce();
-                Invoke(nameof(Temp), 0.75f);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-                scoreCounter?.GetScore(Random.Range(0, 1000));
+            if (Input.GetKeyDown(KeyCode.Space)) ChangeState(StageState.CLEAR);
+                //scoreCounter?.GetScore(Random.Range(0, 1000));
         }
-
-        public void Temp()
-        { background.Cure(); }
 
         public void ChangeState(StageState state)
         {
@@ -100,28 +100,55 @@ namespace CoronaStriker.Level
             {
                 case StageState.READY:
                     {
-                        onReady.Invoke();
+                        StartCoroutine(GameStartCoroutine());
                     }
                     break;
                 case StageState.ON:
                     {
-                        onStart.Invoke();
                     }
                     break;
                 case StageState.CLEAR:
                     {
-                        onClearStart.Invoke();
+                        StartCoroutine(GameClearCoroutine());
                     }
                     break;
                 case StageState.FAIL:
                     {
-                        onFailStart.Invoke();
+                        StartCoroutine(GameOverCoroutine());
                     }
                     break;
                 case StageState.DEFAULT:
                 default:
                     break;
             }
+        }
+
+        private IEnumerator GameStartCoroutine()
+        {
+            gameMessages.stageStart.gameObject.SetActive(true);
+
+            playerHUD.gameObject.SetActive(false);
+            yield return StartCoroutine(gameMessages?.stageStart?.OpenMessageCoroutine());
+            playerHUD.gameObject.SetActive(true);
+
+            ChangeState(StageState.ON);
+        }
+        
+        private IEnumerator GameClearCoroutine()
+        {
+            playerHUD.gameObject.SetActive(false);
+
+            gameMessages?.stageClear?.gameObject.SetActive(true);
+            yield return StartCoroutine(gameMessages?.stageClear?.OpenMessageCoroutine());
+        }
+
+
+        private IEnumerator GameOverCoroutine()
+        {
+            playerHUD.gameObject.SetActive(false);
+
+            gameMessages?.stageFail?.gameObject.SetActive(true);
+            yield return StartCoroutine(gameMessages?.stageFail?.OpenMessageCoroutine());
         }
     }
 }

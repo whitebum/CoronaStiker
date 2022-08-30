@@ -24,12 +24,15 @@ namespace CoronaStriker.Level
 
         public void GetScore(int value)
         {
-            curScore += value;
-
             if (curScore > maxScore)
-                curScore = maxScore;
+            {
+                curScore += value;
 
-            onValueChanged.Invoke(curScore);
+                if (curScore > maxScore)
+                    curScore = maxScore;
+
+                onValueChanged.Invoke(curScore);
+            }
         }
     }
 }

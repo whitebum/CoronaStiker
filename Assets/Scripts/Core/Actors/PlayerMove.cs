@@ -24,7 +24,6 @@ namespace CoronaStriker.Core.Actors
             var vertical = Input.GetAxisRaw("Vertical");
 
             var moveDir = controller.parameter.moveSpeed * Time.deltaTime * new Vector3(horizontal, vertical, 0.0f);
-
             controller.transform.position += moveDir;
         }
     }
