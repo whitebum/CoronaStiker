@@ -7,7 +7,7 @@ namespace CoronaStriker.Core.Actors
 {
     public abstract class ActorParameter : ScriptableObject
     {
-        public float maxHP;
+        public int maxHP;
 
         public float moveSpeed;
     }

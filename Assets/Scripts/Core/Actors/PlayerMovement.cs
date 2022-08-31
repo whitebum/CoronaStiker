@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Actors
 {
-    public class PlayerMove : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private ActorController controller;
+        [SerializeField] private PlayerController controller;
 
         private void Reset()
         {
@@ -20,10 +20,15 @@ namespace CoronaStriker.Core.Actors
 
         private void Update()
         {
+            Move();
+        }
+
+        private void Move()
+        {
             var horizontal = Input.GetAxisRaw("Horizontal");
             var vertical = Input.GetAxisRaw("Vertical");
 
-            var moveDir = controller.parameter.moveSpeed * Time.deltaTime * new Vector3(horizontal, vertical, 0.0f);
+            var moveDir = controller.playerParam.moveSpeed * Time.deltaTime * new Vector3(horizontal, vertical, 0.0f);
             controller.transform.position += moveDir;
         }
     }

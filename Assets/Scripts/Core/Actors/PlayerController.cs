@@ -5,17 +5,18 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Actors
 {
-    public class PlayerController : ActorController
+    public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private float maxHP;
-        [SerializeField] private float moveSpeed;
+        public PlayerParameter playerParam;
 
-        [SerializeField] private int level;
-
-        [SerializeField] private float attackIntervalTime;
-        [SerializeField] private Bullet[] bullets;
-
+        [SerializeField] private ActorGraphics graphics;
         [SerializeField] private PlayerHealth health;
-        [SerializeField] private PlayerMove move;
+        [SerializeField] private PlayerMovement move;
+
+        private void Reset()
+        {
+            health = GetComponent<PlayerHealth>();
+            move = GetComponent<PlayerMovement>();
+        }
     }
 }

@@ -9,8 +9,18 @@ namespace CoronaStriker.Core.Actors
 {
     public class PlayerHealth : HealthSystem
     {
-        [SerializeField] private int maxHP;
-        [SerializeField] private int curHP;
+        [SerializeField] private PlayerController controller;
+
+        public int maxHP
+        {
+            get => controller.playerParam.maxHP;
+        }
+
+        public int curHP
+        {
+            get;
+            private set;
+        }
 
         [Space(10.0f)]
         [SerializeField] private bool isDead;
@@ -33,13 +43,12 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] private BoostEffect boostEffect;
 
         [Space(10.0f)]
-        [SerializeField] private Animator animator;
+        [SerializeField] private ActorGraphics graphics;
+        //[SerializeField] private Animator animator;
 
         [Space(5.0f)]
         [SerializeField] private int healthLayerIdx;
         [SerializeField] private int stateLayerIdx;
-
-        private Dictionary<string, AnimationArgs> animatorArgs;
 
         [Space(5.0f)]
         [SerializeField] private string healthTrigger;
@@ -56,7 +65,7 @@ namespace CoronaStriker.Core.Actors
 
         private void Reset()
         {
-            maxHP = curHP = 5;
+            curHP = maxHP;
 
             var temp = transform.Find("Effects");
 
@@ -65,7 +74,8 @@ namespace CoronaStriker.Core.Actors
             invincibleEffect = transform.GetComponentInChildren<InvincibleEffect>();
             boostEffect = transform.GetComponentInChildren<BoostEffect>();
 
-            animator = GetComponent<Animator>();
+            graphics = GetComponentInChildren<ActorGraphics>();
+            //animator = GetComponent<Animator>();
 
             healthTrigger = "";
             hurtTrigger = "";
@@ -78,7 +88,7 @@ namespace CoronaStriker.Core.Actors
 
         private void Awake()
         {
-            maxHP = curHP = 5;
+            curHP = maxHP;
 
             isDead = false;
 
@@ -88,14 +98,12 @@ namespace CoronaStriker.Core.Actors
             isHurt = false;
             hurtInvincibleTimer = 0.0f;
 
-            animatorArgs = new Dictionary<string, AnimationArgs>();
+            healthLayerIdx = graphics.GetLayerIndex("Health Layer");
+            stateLayerIdx = graphics.GetLayerIndex("State Layer");
 
-            healthLayerIdx = animator.GetLayerIndex("Health Layer");
-            stateLayerIdx = animator.GetLayerIndex("State Layer");
-
-            animatorArgs.Add(healthTrigger, new AnimationArgs { argName = healthTrigger, argHash = Animator.StringToHash(healthTrigger) });
-            animatorArgs.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
-            animatorArgs.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
+            graphics.AddArg(healthTrigger);
+            graphics.AddArg(hurtTrigger);
+            graphics.AddArg(deadTrigger);
 
             onHeal = onHeal ?? new UnityEvent<int>();
             onHurt = onHurt ?? new UnityEvent<int>();
@@ -129,8 +137,7 @@ namespace CoronaStriker.Core.Actors
                     isHurt = false;
                     hurtInvincibleTimer = 0.0f;
 
-                    if (animatorArgs?.ContainsKey(hurtTrigger) == true)
-                        animator?.SetBool(animatorArgs[hurtTrigger], false);
+                    graphics?.SetBool(hurtTrigger, false);
                 }
             }
 #if UNITY_EDITOR
@@ -178,8 +185,7 @@ namespace CoronaStriker.Core.Actors
 
         public void UpdateSprite()
         {
-            if (animatorArgs?.ContainsKey(healthTrigger) == true)
-                animator?.SetInteger(animatorArgs[healthTrigger], curHP);
+            graphics?.SetInteger(healthTrigger, curHP);
         }
 
         public void GetHurt(float time)
@@ -187,9 +193,7 @@ namespace CoronaStriker.Core.Actors
             isHurt = true;
             hurtInvincibleTimer = time;
 
-            if (animatorArgs?.ContainsKey(hurtTrigger) == true)
-                animator?.SetTrigger(animatorArgs[hurtTrigger]);
-
+            graphics?.SetTrigger(hurtTrigger);
         }
 
         public void GetInvincible(float time)
@@ -207,8 +211,7 @@ namespace CoronaStriker.Core.Actors
                 curHP = 0;
                 isDead = true;
 
-                if (animatorArgs?.ContainsKey(deadTrigger) == true)
-                    animator?.SetTrigger(animatorArgs[deadTrigger]);
+                graphics?.SetTrigger(deadTrigger);
 
                 onDead?.Invoke(curHP);
             }

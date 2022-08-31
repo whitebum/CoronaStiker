@@ -15,5 +15,8 @@ MonoBehaviour:
   maxHP: 5
   moveSpeed: 10
   maxLevel: 5
-  attackSpeed: 20
-  useBullet: []
+  attackSpeed: 0.05
+  useBullet:
+  - {fileID: 8577100830039578579, guid: 10dd345d871bfff459822da5c88c44b5, type: 3}
+  - {fileID: 8328961540690436490, guid: f27593c6d8ada254e87ffb6d52cbd214, type: 3}
+  - {fileID: 3396195206420732486, guid: 59f7d1e9171e06e4482e6c70171a2704, type: 3}

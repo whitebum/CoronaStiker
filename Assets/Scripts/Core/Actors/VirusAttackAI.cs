@@ -27,7 +27,7 @@ namespace CoronaStriker.Core.Actors
 
         protected virtual void Awake()
         {
-            factory.Init(useBullet);
+            factory.Init(useBullet, 30);
         }
 
         private void Update()

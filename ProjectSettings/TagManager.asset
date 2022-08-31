@@ -47,6 +47,9 @@ TagManager:
   - name: Actor
     uniqueID: 3463305847
     locked: 0
+  - name: Bullet
+    uniqueID: 3379336939
+    locked: 0
   - name: Effect
     uniqueID: 149381661
     locked: 0

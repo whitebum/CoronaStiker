@@ -9,9 +9,7 @@ namespace CoronaStriker.Core.Actors
         private Bullet origin;
         private Queue<Bullet> bulletBank;
 
-        [SerializeField] private int limit;
-
-        public void Init(Bullet bullet)
+        public void Init(Bullet bullet, int limit)
         {
             bulletBank = new Queue<Bullet>();
             origin = bullet;
@@ -23,6 +21,7 @@ namespace CoronaStriker.Core.Actors
                 newBullet.name = origin.name;
                 newBullet.transform.Translate(transform.position);
                 newBullet.gameObject.SetActive(false);
+                newBullet.onDisable.AddListener(() => PullBullet(newBullet));
 
                 bulletBank.Enqueue(newBullet);
             }
@@ -38,6 +37,7 @@ namespace CoronaStriker.Core.Actors
                 newBullet.name = origin.name;
                 newBullet.transform.Translate(transform.position);
                 newBullet.gameObject.SetActive(false);
+                newBullet.onDisable.AddListener(() => PullBullet(newBullet));
 
                 bulletBank.Enqueue(newBullet);
             }
