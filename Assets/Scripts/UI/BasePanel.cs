@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using CoronaStriker.Core.Utils;
 
 namespace CoronaStriker.UI
 {
     public class BasePanel : MonoBehaviour
     {
         [Header("Animation Partition")]
-        [SerializeField] private Animator animator;
+        [SerializeField] private UIGraphics graphics;
         
         [Space(5.0f)]
-        [SerializeField] private string openTriggerName = "Open";
-        private readonly int openTriggerHash = Animator.StringToHash("Open");
-        [SerializeField] private string closeTriggerName = "Close";
-        private readonly int closeTriggerHash = Animator.StringToHash("Close");
+        [SerializeField] private string openTrigger = "Open";
+        [SerializeField] private string closeTrigger = "Close";
 
         [Header("Events Partition")]
         [HideInInspector] public UnityEvent onOpen;
@@ -22,7 +21,7 @@ namespace CoronaStriker.UI
 
         protected virtual void Reset()
         {
-            TryGetComponent(out animator);
+            graphics = GetComponent<UIGraphics>();
 
             onOpen = new UnityEvent();
             onClose = new UnityEvent();
@@ -32,6 +31,9 @@ namespace CoronaStriker.UI
         {
             onOpen = onOpen ?? new UnityEvent();
             onClose = onClose ?? new UnityEvent();
+
+            graphics.AddArg(openTrigger);
+            graphics.AddArg(closeTrigger);
         }
 
         protected virtual void Update()
@@ -60,8 +62,8 @@ namespace CoronaStriker.UI
         {
             onOpen.Invoke();
 
-            animator.SetTrigger(openTriggerHash);
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            graphics.SetTrigger(openTrigger);
+            yield return new WaitForSeconds(graphics.GetCurrentAnimationLength());
             yield return null;
         }
 
@@ -69,8 +71,8 @@ namespace CoronaStriker.UI
         {
             onClose.Invoke();
 
-            animator.SetTrigger("Close");
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            graphics.SetTrigger(closeTrigger);
+            yield return new WaitForSeconds(graphics.GetCurrentAnimationLength());
 
             gameObject.SetActive(false);
 

@@ -21,7 +21,7 @@ namespace CoronaStriker.UI
 
         protected override void Awake()
         {
-            
+            base.Awake();
         }
 
         private void Start()

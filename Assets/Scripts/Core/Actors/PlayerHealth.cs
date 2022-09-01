@@ -22,27 +22,27 @@ namespace CoronaStriker.Core.Actors
             private set;
         }
 
-        [Space(10.0f)]
+        [Space(5.0f)]
         [SerializeField] private bool isDead;
 
-        [Space(10.0f)]
+        [Space(5.0f)]
         [SerializeField] private bool isHurt;
         [SerializeField] private float hurtInvincibleTimer;
 
-        [Space(10.0f)]
+        [Space(5.0f)]
         [SerializeField] private bool isInvincible;
         [SerializeField] private float invincibleTimer;
 
-        [Space(10.0f)]
+        [Space(5.0f)]
         [SerializeField] private bool isShield;
 
-        [Space(10.0f)]
+        [Space(5.0f)]
         [SerializeField] private HealEffect healEffect;
         [SerializeField] private ShieldEffect shieldEffect;
         [SerializeField] private InvincibleEffect invincibleEffect;
         [SerializeField] private BoostEffect boostEffect;
 
-        [Space(10.0f)]
+        [Space(5.0f)]
         [SerializeField] private ActorGraphics graphics;
         //[SerializeField] private Animator animator;
 
@@ -55,7 +55,7 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] private string hurtTrigger;
         [SerializeField] private string deadTrigger;
 
-        [Space(10.0f)]
+        [Space(5.0f)]
         //public HealthEvent onHeal;
         //public HealthEvent onHurt;
         //public HealthEvent onDead;

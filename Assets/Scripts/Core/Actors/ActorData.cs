@@ -5,10 +5,8 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Actors
 {
-    public abstract class ActorParameter : ScriptableObject
+    public abstract class ActorData : ScriptableObject
     {
-        public int maxHP;
-
-        public float moveSpeed;
+        
     }
 }

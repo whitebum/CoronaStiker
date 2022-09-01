@@ -2,26 +2,18 @@ using CoronaStriker.Core.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CoronaStriker.Core.Actors
+namespace CoronaStriker.Core.Utils
 {
     [RequireComponent(typeof(Animator))]
-    [RequireComponent(typeof(SpriteRenderer))]
-    public class ActorGraphics : MonoBehaviour
+    public class BaseGraphics : MonoBehaviour
     {
-        public SpriteRenderer spriteRenderer;
         public Animator animator;
 
         public Dictionary<string, AnimationArgs> animationArgs;
 
         private void Reset()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
-        }
-
-        private void Awake()
-        {
-            
         }
 
         public void AddArg(string argName)
@@ -84,6 +76,21 @@ namespace CoronaStriker.Core.Actors
                 return animator?.GetBool(animationArgs[argName]) ?? false;
 
             return false;
+        }
+
+        public float GetCurrentAnimationLength()
+        {
+            return GetCurrentAnimationLength(0);
+        }
+
+        public float GetCurrentAnimationLength(int layerId)
+        {
+            return animator?.GetCurrentAnimatorStateInfo(0).length ?? 0.0f;
+        }
+
+        public float GetCurrentAnimationLength(string layerName)
+        {
+            return animator?.GetCurrentAnimatorStateInfo(animator.GetLayerIndex(layerName)).length ?? 0.0f;
         }
 
         public int GetLayerIndex(string layerName)

@@ -21,12 +21,11 @@ namespace CoronaStriker.Core.Actors
 
         public void Update()
         {
-            transform.Translate(20.0f * Time.deltaTime * Vector3.up);
+            transform.Translate(50.0f * Time.deltaTime * Vector3.up);
         }
 
         private void OnBecameInvisible()
         {
-            Debug.Log("dd");
             onDisable.Invoke();
         }
     }

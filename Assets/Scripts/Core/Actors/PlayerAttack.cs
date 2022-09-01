@@ -8,6 +8,7 @@ namespace CoronaStriker.Core.Actors
     {
         [SerializeField] private PlayerController controller;
 
+        [SerializeField] private int level = 1;
         [SerializeField] private float attackTimer = 0.0f;
         [SerializeField] private List<BulletFactory> magazine;
 
@@ -37,12 +38,69 @@ namespace CoronaStriker.Core.Actors
             {
                 attackTimer += Time.deltaTime;
 
-                if (attackTimer >= controller.playerParam.attackSpeed)
+                if (attackTimer >= controller.playerParam.attackTime)
                 {
-                    var newBullet = magazine[0].GetBullet();
-                    newBullet.transform.position = controller.transform.position;
-                    attackTimer = 0.0f;
+                    switch (level)
+                    {
+                        default:
+                        case 1:
+                            {
+                                var newBullet = magazine[0].GetBullet();
+                                newBullet.transform.position = controller.transform.position;
+                                attackTimer = 0.0f;
+                            }
+                            break;
+                        case 2:
+                            {
+                                var newBullet1 = magazine[0].GetBullet();
+                                newBullet1.transform.position = controller.transform.position + new Vector3(+0.2f, 0.0f, 0.0f);
+
+                                var newBullet2 = magazine[0].GetBullet();
+                                newBullet2.transform.position = controller.transform.position + new Vector3(-0.2f, 0.0f, 0.0f);
+                                attackTimer = 0.0f;
+                            }
+                            break;
+                        case 3:
+                            {
+                                var newBullet1 = magazine[0].GetBullet();
+                                newBullet1.transform.position = controller.transform.position + new Vector3(+0.2f, 0.0f, 0.0f);
+
+                                var newBullet2 = magazine[1].GetBullet();
+                                newBullet2.transform.position = controller.transform.position + new Vector3(0.0f, 0.0f, 0.0f);
+
+                                var newBullet3 = magazine[0].GetBullet();
+                                newBullet3.transform.position = controller.transform.position + new Vector3(-0.2f, 0.0f, 0.0f);
+                                attackTimer = 0.0f;
+                            }
+                            break;
+                        case 4:
+                            {
+                                var newBullet1 = magazine[0].GetBullet();
+                                newBullet1.transform.position = controller.transform.position + new Vector3(+0.2f, 0.0f, 0.0f);
+
+                                var newBullet2 = magazine[1].GetBullet();
+                                newBullet2.transform.position = controller.transform.position + new Vector3(0.0f, 0.0f, 0.0f);
+
+                                var newBullet3 = magazine[0].GetBullet();
+                                newBullet3.transform.position = controller.transform.position + new Vector3(-0.2f, 0.0f, 0.0f);
+
+                                var newBullet4 = magazine[2].GetBullet();
+                                newBullet4.transform.position = controller.transform.position + new Vector3(-0.5f, 0.0f, 0.0f);
+                                newBullet4.transform.rotation = Quaternion.Euler(new Vector3(0.2f, 0.0f, 10.0f));
+
+                                var newBullet5 = magazine[2].GetBullet();
+                                newBullet5.transform.position = controller.transform.position + new Vector3(0.5f, 0.0f, 0.0f);
+                                newBullet5.transform.rotation = Quaternion.Euler(new Vector3(0.2f, 0.0f, -10.0f));
+
+                                attackTimer = 0.0f;
+                            }
+                            break;
+                    }
                 }
+            }
+            else
+            {
+                attackTimer = 0.0f;
             }
         }
     }
