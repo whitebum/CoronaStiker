@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Utils
 {
-    [RequireComponent(typeof(UnbreakableObject))]
     public abstract class InstanteSingleton<T> : MonoBehaviour where T : class
     {
         private static T instance { get; set; }
@@ -19,7 +18,7 @@ namespace CoronaStriker.Core.Utils
             if (instance != null)
                 Destroy(gameObject);
 
-            instance = TryGetComponent<T>(out var temp) ? temp : null;
+            instance = GetComponent<T>() ?? gameObject.AddComponent(typeof(T)) as T;
         }
     }
 }

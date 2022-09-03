@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Utils
 {
-    [RequireComponent(typeof(UnbreakableObject))]
     public abstract class LazySingleton<T> : MonoBehaviour where T : class
     {
         // Lazy는 인스턴스 호출 시에 인스턴스를 생성함.

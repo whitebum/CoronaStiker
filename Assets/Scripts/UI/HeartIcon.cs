@@ -11,7 +11,7 @@ namespace CoronaStriker.UI
         [SerializeField] private Image image;
         [SerializeField] private Animator animator;
 
-        private Dictionary<string, AnimationArgs> animTriggers;
+        private Dictionary<string, AnimationParam> animTriggers;
 
         [SerializeField] private string fullTrigger;
         [SerializeField] private string nullTrigger;
@@ -27,13 +27,13 @@ namespace CoronaStriker.UI
 
         private void Awake()
         {
-            animTriggers = new Dictionary<string, AnimationArgs>();
+            animTriggers = new Dictionary<string, AnimationParam>();
 
             if (fullTrigger != "")
-                animTriggers.Add(fullTrigger, new AnimationArgs { argName = fullTrigger, argHash = Animator.StringToHash(fullTrigger) });
+                animTriggers.Add(fullTrigger, new AnimationParam { paramName = fullTrigger, paramHash = Animator.StringToHash(fullTrigger) });
 
             if (nullTrigger != "")
-                animTriggers.Add(nullTrigger, new AnimationArgs { argName = nullTrigger, argHash = Animator.StringToHash(nullTrigger) });
+                animTriggers.Add(nullTrigger, new AnimationParam { paramName = nullTrigger, paramHash = Animator.StringToHash(nullTrigger) });
         }
 
         public void UpdateIcon(bool isActive)

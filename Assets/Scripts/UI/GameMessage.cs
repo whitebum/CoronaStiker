@@ -13,7 +13,7 @@ namespace CoronaStriker.UI
         [SerializeField] private float waitTime;
         [SerializeField] private bool isShouldDisable = true;
 
-        private Dictionary<string, AnimationArgs> animationArgs;
+        private Dictionary<string, AnimationParam> animationArgs;
 
         [Space(5.0f)]
         [SerializeField] private string openTrigger = "Open";
@@ -31,10 +31,10 @@ namespace CoronaStriker.UI
         {
             animator = animator ?? GetComponent<Animator>();
 
-            animationArgs = new Dictionary<string, AnimationArgs>();
+            animationArgs = new Dictionary<string, AnimationParam>();
 
-            animationArgs.Add(openTrigger, new AnimationArgs { argName = openTrigger, argHash = Animator.StringToHash(openTrigger) });
-            animationArgs.Add(closeTrigger, new AnimationArgs { argName = closeTrigger, argHash = Animator.StringToHash(closeTrigger) });
+            animationArgs.Add(openTrigger, new AnimationParam { paramName = openTrigger, paramHash = Animator.StringToHash(openTrigger) });
+            animationArgs.Add(closeTrigger, new AnimationParam { paramName = closeTrigger, paramHash = Animator.StringToHash(closeTrigger) });
         }
 
         public void OpenMessage()

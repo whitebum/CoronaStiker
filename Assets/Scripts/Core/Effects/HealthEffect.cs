@@ -2,12 +2,12 @@
 
 namespace CoronaStriker.Core.Effects
 {
-    public sealed class InvincibleEffect : KeepableEffect
+    public sealed class HealthEffect : InstantEffect
     {
         private void Awake()
         {
             //graphics.GetComponent<SpriteRenderer>().sortingLayerName = EffectLeyerLevel.effectLayerName;
-            //graphics.GetComponent<SpriteRenderer>().sortingLayerID = EffectLeyerLevel.invincibleID;
+            //graphics.GetComponent<SpriteRenderer>().sortingLayerID = EffectLeyerLevel.healthID;
         }
     }
 }

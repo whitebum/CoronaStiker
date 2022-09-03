@@ -1,52 +1,22 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CoronaStriker.Core.Effects
 {
-    [RequireComponent(typeof(SpriteRenderer))]
-    [RequireComponent(typeof(Animator))]
-    public class BaseEffect : MonoBehaviour
+    [RequireComponent(typeof(EffectGraphics))]
+    public abstract class BaseEffect : MonoBehaviour
     {
-        [SerializeField] protected SpriteRenderer spriteRenderer;
-        [SerializeField] protected Animator animator;
+        [SerializeField] protected EffectGraphics graphics;
 
-        private void Reset()
+        protected virtual void Reset()
         {
-            spriteRenderer  = GetComponent<SpriteRenderer>();
-            animator        = GetComponent<Animator>();
+            graphics = GetComponent<EffectGraphics>();
         }
 
-        private void Awake()
-        {
-            spriteRenderer  = spriteRenderer ?? GetComponent<SpriteRenderer>();
-            animator        = animator ?? GetComponent<Animator>();
-        }
-
-        public void OnEffect()
-        {
-            if (gameObject.activeSelf)
-                animator.playbackTime = 0.0f;
-
-            else
-                gameObject.SetActive(true);
-        }
-
-        public void OffEffect()
-        {
-            gameObject.SetActive(false);
-        }
-
-        public void OnEffectOnce()
-        {
-            gameObject.SetActive(true);
-            StartCoroutine(OnEffectOnceCoroutine());
-        }
-
-        public IEnumerator OnEffectOnceCoroutine()
-        {
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-            gameObject.SetActive(false);
-        }
+        public abstract void OnEffect();
+        public abstract void OffEffect();
     }
 }

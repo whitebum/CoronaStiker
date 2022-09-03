@@ -6,11 +6,13 @@ namespace CoronaStriker.Core.Effects
 {
     public struct EffectLeyerLevel
     {
-        public readonly static int invincibleLevel = 0;
-        public readonly static int boostLevel = 1;
-        public readonly static int shieldLevel = 2;
-        public readonly static int explosionLevel = 3;
-        public readonly static int healthLevel = 4;
-        public readonly static int clearLevel = 5;
+        public const string effectLayerName = "Effect";
+
+        public const int invincibleID = 0;
+        public const int boostID = 1;
+        public const int shieldID = 2;
+        public const int explosionID = 3;
+        public const int healthID = 4;
+        public const int clearID = 5;
     }
 }

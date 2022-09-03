@@ -32,8 +32,8 @@ namespace CoronaStriker.UI
             onOpen = onOpen ?? new UnityEvent();
             onClose = onClose ?? new UnityEvent();
 
-            graphics.AddArg(openTrigger);
-            graphics.AddArg(closeTrigger);
+            graphics.AddParam(openTrigger);
+            graphics.AddParam(closeTrigger);
         }
 
         protected virtual void Update()

@@ -6,16 +6,16 @@ using UnityEngine;
 namespace CoronaStriker.Core.Utils
 {
     [Serializable]
-    public class AnimationArgs
+    public class AnimationParam
     {
         [Tooltip("애니메이션 패러매터의 이름")]
-        public string argName;
+        public string paramName;
         [Tooltip("애니메이션 패러매터의 해쉬값")]
-        public int argHash;
+        public int paramHash;
 
-        public static implicit operator int (AnimationArgs arg)
+        public static implicit operator int (AnimationParam param )
         {
-            return arg.argHash;
+            return param.paramHash;
         }
     }
 }

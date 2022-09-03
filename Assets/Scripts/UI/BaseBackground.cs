@@ -9,7 +9,7 @@ namespace CoronaStriker.UI
     {
         [SerializeField] protected Animator animator;
 
-        protected Dictionary<string, AnimationArgs> animTriggers;
+        protected Dictionary<string, AnimationParam> animTriggers;
 
         protected virtual void Reset()
         {
@@ -18,13 +18,13 @@ namespace CoronaStriker.UI
 
         protected virtual void Awake()
         {
-            animTriggers = new Dictionary<string, AnimationArgs>();
+            animTriggers = new Dictionary<string, AnimationParam>();
         }
 
         protected void AddTrigger(string triggerName)
         {
             if (triggerName != null && triggerName != "")
-                animTriggers.Add(triggerName, new AnimationArgs { argName = triggerName, argHash = Animator.StringToHash(triggerName) });
+                animTriggers.Add(triggerName, new AnimationParam { paramName = triggerName, paramHash = Animator.StringToHash(triggerName) });
         }
 
         public void SetTrigger(string triggerName)

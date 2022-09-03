@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace CoronaStriker.Core.Utils
 {
-    [RequireComponent(typeof(UnbreakableObject))]
     public abstract class Singleton<T> : MonoBehaviour where T : class
     {
         private static T _instance = null;

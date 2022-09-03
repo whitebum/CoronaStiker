@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine;
 
 namespace CoronaStriker.Core.Effects
 {
-    public class BoostEffect : BaseEffect
+    public sealed class BoostEffect : KeepableEffect
     {
+        private void Awake()
+        {
+            //graphics.GetComponent<SpriteRenderer>().sortingLayerName = EffectLeyerLevel.effectLayerName;
+            //graphics.GetComponent<SpriteRenderer>().sortingLayerID = EffectLeyerLevel.boostID;
+        }
     }
 }

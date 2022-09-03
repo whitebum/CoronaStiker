@@ -299,8 +299,8 @@ MonoBehaviour:
   animator: {fileID: 286689115}
   waitTime: 0
   isShouldDisable: 1
-  openTriggerName: Open
-  closeTriggerName: Close
+  openTrigger: Open
+  closeTrigger: Close
 --- !u!222 &286689118
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -611,8 +611,8 @@ MonoBehaviour:
   animator: {fileID: 481976681}
   waitTime: 0
   isShouldDisable: 1
-  openTriggerName: Open
-  closeTriggerName: Close
+  openTrigger: Open
+  closeTrigger: Close
 --- !u!1 &518548870
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +661,7 @@ GameObject:
   - component: {fileID: 577138079}
   - component: {fileID: 577138078}
   - component: {fileID: 577138077}
+  - component: {fileID: 577138080}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -742,7 +743,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 149381661
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -767,8 +768,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1866c0c0233cb044bb7fde949bbec86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 577138078}
-  animator: {fileID: 577138077}
+--- !u!114 &577138080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577138075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770a70b99d695784b8f7ec16e8b66745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 577138077}
 --- !u!1 &619302600
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,8 +894,8 @@ MonoBehaviour:
   animator: {fileID: 619302604}
   waitTime: 0
   isShouldDisable: 1
-  openTriggerName: Open
-  closeTriggerName: Close
+  openTrigger: Open
+  closeTrigger: Close
 --- !u!1 &715768004
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,7 +940,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64bc918246ed5d44b50ee6609c5a8e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1248672783}
 --- !u!1 &782061267
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,6 +1090,7 @@ GameObject:
   - component: {fileID: 1166468185}
   - component: {fileID: 1166468184}
   - component: {fileID: 1166468183}
+  - component: {fileID: 1166468186}
   m_Layer: 0
   m_Name: Invincible
   m_TagString: Untagged
@@ -1160,7 +1172,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 149381661
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1185,8 +1197,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1866c0c0233cb044bb7fde949bbec86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1166468184}
-  animator: {fileID: 1166468183}
+--- !u!114 &1166468186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166468181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770a70b99d695784b8f7ec16e8b66745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 1166468183}
 --- !u!1 &1248672777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,16 +1260,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  _maxHP: 5
-  _curHP: 5
-  _isDead: 0
-  _isInvincible: 0
-  _invincibleTimer: 0
-  animator: {fileID: 1248672782}
+  isDead: 0
+  isHurt: 0
+  hurtInvincibleTimer: 0
+  isInvincible: 0
+  invincibleTimer: 0
+  isShield: 0
+  healEffect: {fileID: 1945423149}
+  shieldEffect: {fileID: 577138079}
+  invincibleEffect: {fileID: 1166468185}
+  graphics: {fileID: 0}
+  healthLayerId: 0
+  stateLayerId: 0
   healthTrigger: Health
-  deadTrigger: Dead
-  idleTrigger: Idle
   hurtTrigger: Hurt
+  deadTrigger: Dead
+  onHeal:
+    m_PersistentCalls:
+      m_Calls: []
   onHurt:
     m_PersistentCalls:
       m_Calls:
@@ -1277,18 +1308,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  isHurt: 0
-  hurtInvincibleTimer: 0
-  isShield: 0
-  healEffect: {fileID: 1945423149}
-  shieldEffect: {fileID: 577138079}
-  invincibleEffect: {fileID: 1166468185}
-  flashEffect: {fileID: 715768006}
-  healthLayerIdx: 0
-  stateLayerIdx: 0
-  onHeal:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!95 &1248672782
 Animator:
   serializedVersion: 4
@@ -1405,7 +1424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175485c00688d3342aa08f105df77e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limit: 50
 --- !u!1 &1548738421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1797,8 +1815,8 @@ MonoBehaviour:
   animator: {fileID: 1902990846}
   waitTime: 0
   isShouldDisable: 1
-  openTriggerName: Open
-  closeTriggerName: Close
+  openTrigger: Open
+  closeTrigger: Close
 --- !u!1 &1921520906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1844,6 +1862,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bff3cdc4417765458bc7849965f84db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  level: 1
+  attackTimer: 0
+  magazine: []
 --- !u!114 &1921520909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,6 +1879,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  isBoost: 0
+  boostTimer: 0
+  boostEffect: {fileID: 0}
 --- !u!1 &1945423145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1869,6 +1894,7 @@ GameObject:
   - component: {fileID: 1945423149}
   - component: {fileID: 1945423148}
   - component: {fileID: 1945423147}
+  - component: {fileID: 1945423150}
   m_Layer: 0
   m_Name: Heal
   m_TagString: Untagged
@@ -1950,7 +1976,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 149381661
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1975,8 +2001,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1866c0c0233cb044bb7fde949bbec86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1945423148}
-  animator: {fileID: 1945423147}
+--- !u!114 &1945423150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945423145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770a70b99d695784b8f7ec16e8b66745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 1945423147}
 --- !u!1 &2118605917
 GameObject:
   m_ObjectHideFlags: 0

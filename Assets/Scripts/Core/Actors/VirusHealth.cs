@@ -20,38 +20,31 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] private float invincibleTimer;
 
         [Space(10.0f)]
-        [SerializeField] private Animator animator;
+        [SerializeField] private ActorGraphics graphics;
 
         [Space(5.0f)]
-        [SerializeField] private int healthLayerIdx;
-        [SerializeField] private int stateLayerIdx;
-
-        private Dictionary<string, AnimationArgs> animatorArgs;
+        [SerializeField] private int healthLayerId;
+        [SerializeField] private int stateLayerId;
 
         [Space(5.0f)]
-        [SerializeField] private string hurtTrigger;
-        [SerializeField] private string deadTrigger;
+        [SerializeField] private string hurtParam;
+        [SerializeField] private string deadParam;
 
         [Space(10.0f)]
-        //public HealthEvent onHeal;
-        //public HealthEvent onHurt;
-        //public HealthEvent onDead;
-        public UnityEvent onHeal;
-        public UnityEvent onHurt;
-        public UnityEvent onDead;
+        public HealthEvent onHurt;
+        public HealthEvent onDead;
 
         private void Reset()
         {
             maxHP = curHP = 5;
 
-            animator = GetComponent<Animator>();
+            graphics = GetComponent<ActorGraphics>();
 
-            hurtTrigger = "";
-            deadTrigger = "";
+            hurtParam = "Hurt";
+            deadParam = "Dead";
 
-            onHeal = new UnityEvent();
-            onHurt = new UnityEvent();
-            onDead = new UnityEvent();
+            onHurt = new HealthEvent();
+            onDead = new HealthEvent();
         }
 
         private void Awake()
@@ -63,18 +56,20 @@ namespace CoronaStriker.Core.Actors
             isInvincible = false;
             invincibleTimer = 0.0f;
 
-            animatorArgs = new Dictionary<string, AnimationArgs>();
+            healthLayerId = graphics?.GetLayerIndex("Health Layer") ?? -1;
+            stateLayerId = graphics?.GetLayerIndex("State Layer") ?? -1;
 
-            healthLayerIdx = animator.GetLayerIndex("Health Layer");
-            stateLayerIdx = animator.GetLayerIndex("State Layer");
+            graphics?.AddParam(hurtParam);
+            graphics?.AddParam(deadParam);
 
-            animatorArgs.Add(hurtTrigger, new AnimationArgs { argName = hurtTrigger, argHash = Animator.StringToHash(hurtTrigger) });
-            animatorArgs.Add(deadTrigger, new AnimationArgs { argName = deadTrigger, argHash = Animator.StringToHash(deadTrigger) });
+            onHurt = onHurt ?? new HealthEvent();
+            onDead = onDead ?? new HealthEvent();
+        }
 
-            onHurt = onHurt ?? new UnityEvent();
-            onDead = onDead ?? new UnityEvent();
-
-            onDead.AddListener(() => gameObject.SetActive(false));
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+                GetDamage(1);
         }
 
         public void GetDamage(int damage)
@@ -85,21 +80,29 @@ namespace CoronaStriker.Core.Actors
 
                 if (curHP <= 0)
                 {
+                    isDead = true;
                     curHP = 0;
 
-                    onDead.Invoke();
+                    graphics?.SetTrigger(deadParam);
+
+                    gameObject.transform.localScale *= 2.0f;
+
+                    StartCoroutine(DeadCoroutine());
                 }
                 else
                 {
-                    if (animatorArgs?.ContainsKey(hurtTrigger) == true)
-                    {
-                        if (animator?.GetBool(animatorArgs[hurtTrigger]) == false)
-                            animator?.SetBool(animatorArgs[hurtTrigger], true);
-                    }
+                    graphics?.SetBool(hurtParam, true);
                 }
             }
         }
 
-        
+        private IEnumerator DeadCoroutine()
+        {
+            yield return new WaitForSecondsRealtime(graphics?.GetCurrentAnimationLength(stateLayerId) ?? 0.0f);
+
+            gameObject.SetActive(true);
+
+            onDead?.Invoke(curHP);
+        }
     }
 }
