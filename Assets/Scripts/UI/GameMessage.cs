@@ -7,64 +7,48 @@ namespace CoronaStriker.UI
 {
     public class GameMessage : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
+        [SerializeField] private UIGraphics graphics;
 
-        [Space(5.0f)]
-        [SerializeField] private float waitTime;
-        [SerializeField] private bool isShouldDisable = true;
-
-        private Dictionary<string, AnimationParam> animationArgs;
-
-        [Space(5.0f)]
-        [SerializeField] private string openTrigger = "Open";
-        [SerializeField] private string closeTrigger = "Close";
+        [SerializeField] private float awaitTime;
+        [SerializeField] private string openTrigger;
+        [SerializeField] private string closeTrigger;
 
         private void Reset()
         {
-            animator = GetComponent<Animator>();
+            graphics = GetComponent<UIGraphics>();
 
-            openTrigger = "";
-            closeTrigger = "";
+            awaitTime = 1.0f;
+
+            openTrigger = "Open";
+            closeTrigger = "Close";
         }
 
         private void Awake()
         {
-            animator = animator ?? GetComponent<Animator>();
-
-            animationArgs = new Dictionary<string, AnimationParam>();
-
-            animationArgs.Add(openTrigger, new AnimationParam { paramName = openTrigger, paramHash = Animator.StringToHash(openTrigger) });
-            animationArgs.Add(closeTrigger, new AnimationParam { paramName = closeTrigger, paramHash = Animator.StringToHash(closeTrigger) });
+            graphics.AddParam(openTrigger);
+            graphics.AddParam(closeTrigger);
         }
 
         public void OpenMessage()
-        {
-            if (!gameObject.activeSelf)
-                gameObject.SetActive(true);
-
-            StartCoroutine(OpenMessageCoroutine());
-        }
-
-        public void CloseMessage()
         {
             StartCoroutine(OpenMessageCoroutine());
         }
 
         public IEnumerator OpenMessageCoroutine()
         {
-            if (animationArgs?.ContainsKey(openTrigger) == true)
-                animator?.SetTrigger(animationArgs[openTrigger]);
+            gameObject.SetActive(true);
+            graphics?.SetTrigger(openTrigger);
 
-            yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSecondsRealtime(graphics.GetCurrentAnimationLength());
+            yield return new WaitForSecondsRealtime(awaitTime);
 
-            yield return new WaitForSecondsRealtime(waitTime);
+            graphics?.SetTrigger(closeTrigger);
 
-            if (animationArgs?.ContainsKey(closeTrigger) == true)
-                animator?.SetTrigger(animationArgs[closeTrigger]);
-
-            yield return new WaitForSecondsRealtime(animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSecondsRealtime(graphics.GetCurrentAnimationLength());
 
             gameObject.SetActive(false);
+
+            yield return null;
         }
     }
 }

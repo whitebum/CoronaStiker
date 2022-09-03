@@ -6,13 +6,29 @@ namespace CoronaStriker.Core.Actors
 {
     public struct ActorLayerLevel
     {
-        public readonly static int enemy1Level = 0;
-        public readonly static int enemy2Level = 1;
-        public readonly static int enemy3Level = 2;
+        #region Layer Name
+        public const string actorLayerName = "Actor";
+        #endregion
 
-        public readonly static int redCellLevel = 3;
-        public readonly static int whiteCellLevel = 4;
-        
-        public readonly static int playerLevel = 5;
+        #region Layer ID
+        #region Dummy ID
+        public const int defalutID = 0;
+        #endregion
+
+        #region Viruses' ID
+        public const int enemy1Level = 0;
+        public const int enemy2Level = 1;
+        public const int enemy3Level = 2;
+        #endregion
+
+        #region Cells' ID
+        public const int redCellLevel = 3;
+        public const int whiteCellLevel = 4;
+        #endregion
+
+        #region Player's ID
+        public const int playerLevel = 5;
+        #endregion
+        #endregion
     }
 }

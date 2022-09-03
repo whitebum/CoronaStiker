@@ -36,13 +36,13 @@ namespace CoronaStriker.Level
             onIntroEnd = onIntroEnd ?? new UnityEvent();
 
             onIntroBegin.AddListener(() => { isEndedIntro = false; });
-            onIntroBegin.AddListener(() => { background.IntruductionScreen(); });
+            onIntroBegin.AddListener(() => { background.SetIntruductionScreen(); });
             onIntroBegin.AddListener(() => { titleLogo.gameObject.SetActive(false); });
             onIntroBegin.AddListener(() => { pressLogo.gameObject.SetActive(false); });
             onIntroBegin.AddListener(() => { StartCoroutine(TurnTitle()); });
 
             onIntroEnd.AddListener(() => { isEndedIntro = true; });
-            onIntroEnd.AddListener(() => { background.TitleScreen(); });
+            onIntroEnd.AddListener(() => { background.SetTitleScreen(); });
             onIntroEnd.AddListener(() => { titleLogo.gameObject.SetActive(true); });
             onIntroEnd.AddListener(() => { pressLogo.gameObject.SetActive(true); });
             onIntroEnd.AddListener(() => { whitePanel.FadeOutEffect(); });
@@ -75,7 +75,7 @@ namespace CoronaStriker.Level
 
         private IEnumerator TurnTitle()
         {
-            yield return new WaitForSecondsRealtime(background.GetCurrentAnimLength());
+            yield return new WaitForSecondsRealtime(background.graphics.GetCurrentAnimationLength());
             onIntroEnd.Invoke();
         }
     }

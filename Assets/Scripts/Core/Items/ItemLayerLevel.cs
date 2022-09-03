@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemLayerLevel : MonoBehaviour
+namespace CoronaStriker.Core.Items
 {
-    // Start is called before the first frame update
-    void Start()
+    public struct ItemLayerLevel
     {
-        
-    }
+        #region Layer Name
+        public const string itemLayerName = "Item";
+        #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        #region Layer ID
+        public const int defaultID = 0;
+        public const int healthItemID = 1;
+        public const int invincibleItemID = 2;
+        public const int shieldItemID = 3;
+        public const int BoostItemID = 4;
+        public const int RandomItemID = 5;
+        #endregion
     }
 }

@@ -14,6 +14,8 @@ namespace CoronaStriker.Level
 
         private void Awake()
         {
+            DontDestroyOnLoad(gameObject);
+
             // 경로 정정하자.
             if (!transform.Find("").TryGetComponent(out canvas))
             {

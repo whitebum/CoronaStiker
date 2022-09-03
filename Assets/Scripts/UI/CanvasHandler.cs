@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ using ScreenMatchMode = UnityEngine.UI.CanvasScaler.ScreenMatchMode;
 namespace CoronaStriker.UI
 {
     [RequireComponent(typeof(Canvas))]
-    public sealed class CanvasHandler : MonoBehaviour
+    public class CanvasHandler : MonoBehaviour
     {
         private readonly RenderMode renderMode = RenderMode.ScreenSpaceCamera;
 
@@ -22,10 +23,10 @@ namespace CoronaStriker.UI
         public Canvas canvas { get => m_canvas; }
         public CanvasScaler canvasScaler { get => m_canvasScaler; }
 
-        public void Reset()
+        protected virtual void Reset()
         {
-            TryGetComponent(out m_canvas);
-            TryGetComponent(out m_canvasScaler);
+            m_canvas = GetComponent<Canvas>();
+            m_canvasScaler = GetComponent<CanvasScaler>();
 
             m_canvas.renderMode = renderMode;
             m_canvas.worldCamera = Camera.main;
@@ -36,16 +37,20 @@ namespace CoronaStriker.UI
             m_canvasScaler.matchWidthOrHeight = matchWidthOrHeight;
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
-            if (!TryGetComponent(out m_canvas))
+            if (!m_canvas)
             {
+                m_canvas = GetComponent<Canvas>();
+
                 m_canvas.renderMode = renderMode;
                 m_canvas.worldCamera = Camera.main;
             }
 
-            if (!TryGetComponent(out m_canvasScaler))
+            if (!m_canvasScaler)
             {
+                m_canvasScaler = GetComponent<CanvasScaler>();
+
                 m_canvasScaler.uiScaleMode = scaleMode;
                 m_canvasScaler.referenceResolution = refResolution;
                 m_canvasScaler.screenMatchMode = screenMatchMode;
@@ -53,7 +58,7 @@ namespace CoronaStriker.UI
             }
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             if (!m_canvas.worldCamera)
                 m_canvas.worldCamera = Camera.main ?? null;

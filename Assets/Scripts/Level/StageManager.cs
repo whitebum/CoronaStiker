@@ -19,13 +19,13 @@ namespace CoronaStriker.Level
         [Header("스테이지 백그라운드")]
         [SerializeField] private StageBackground background;
 
-        [Header("게임 타이머와 제한 시간")]
-        [SerializeField] private float gameTime;
-        [SerializeField] private float maxGameTime;
-
-        [Header("")]
+        [Header("타이머")]
         public GameTimer gameTimer;
+        public float maxGameTime;
+
+        [Header("스코어")]
         public ScoreCounter scoreCounter;
+        public int maxScoreCount;
 
         [Header("플레이어 HUD")]
         public PlayerHealth playerHealth;
@@ -35,7 +35,7 @@ namespace CoronaStriker.Level
         [SerializeField] private MessageHUD gameMessages;
 
         [Header("클리어 이펙트")]
-        [SerializeField] private BaseEffect clearEffect;
+        [SerializeField] private ClearEffect clearEffect;
 
         [Header("스테이지 콜백")]
         [SerializeField] private StageEvent onReady;
@@ -50,11 +50,16 @@ namespace CoronaStriker.Level
             background = GetComponentInChildren<StageBackground>();
 
             gameTimer = GetComponentInChildren<GameTimer>();
+            maxGameTime = 599.0f;
+
             scoreCounter = GetComponentInChildren<ScoreCounter>();
+            maxScoreCount = 999999;
 
             playerHUD = GetComponentInChildren<PlayerHUD>();
 
             gameMessages = GetComponentInChildren<MessageHUD>();
+
+            clearEffect = GetComponentInChildren<ClearEffect>();
 
             onReady = new StageEvent();
             onStart = new StageEvent();
@@ -68,6 +73,8 @@ namespace CoronaStriker.Level
         {
             Instance = this;
 
+            playerHealth = FindObjectOfType<PlayerHealth>();
+
             onReady = onReady ?? new StageEvent();
             onStart = onStart ?? new StageEvent();
             onClearStart = onClearStart ?? new StageEvent();
@@ -75,7 +82,7 @@ namespace CoronaStriker.Level
             onFailStart = onFailStart ?? new StageEvent();
             onFailEnd = onFailEnd ?? new StageEvent();
 
-            playerHealth.onDead.AddListener((value) => { StartCoroutine(GameOverCoroutine()); });
+            playerHealth?.onDead?.AddListener((value) => { StartCoroutine(GameOverCoroutine()); });
         }
 
         private void Start()
@@ -90,8 +97,10 @@ namespace CoronaStriker.Level
                 gameTimer.GetTime();
             }
 
-            if (Input.GetKeyDown(KeyCode.Space)) ChangeState(StageState.CLEAR);
-                //scoreCounter?.GetScore(Random.Range(0, 1000));
+            if (Input.GetKeyDown(KeyCode.C)) ChangeState(StageState.CLEAR);
+            //scoreCounter?.GetScore(Random.Range(0, 1000));
+
+            if (Input.GetKeyDown(KeyCode.F)) ChangeState(StageState.FAIL);
         }
 
         public void ChangeState(StageState state)
@@ -138,17 +147,27 @@ namespace CoronaStriker.Level
         {
             playerHUD.gameObject.SetActive(false);
 
+            clearEffect?.OnEffect();
+
+            yield return new WaitForSecondsRealtime(clearEffect?.graphics.GetCurrentAnimationLength() / 2.0f ?? 0.0f);
+            
             gameMessages?.stageClear?.gameObject.SetActive(true);
+            background?.SetCure();
+
             yield return StartCoroutine(gameMessages?.stageClear?.OpenMessageCoroutine());
         }
 
 
         private IEnumerator GameOverCoroutine()
         {
+            gameMessages?.stageFail?.gameObject.SetActive(true);
+
             playerHUD.gameObject.SetActive(false);
 
             gameMessages?.stageFail?.gameObject.SetActive(true);
             yield return StartCoroutine(gameMessages?.stageFail?.OpenMessageCoroutine());
+
+            SceneManager.GetInstance().LoadLevel("TitleScene");
         }
     }
 }

@@ -5,37 +5,19 @@ using CoronaStriker.Core.Utils;
 
 namespace CoronaStriker.UI
 {
-    public abstract class BaseBackground : MonoBehaviour
+    public abstract class BaseBackground : CanvasHandler
     {
-        [SerializeField] protected Animator animator;
+        public ObjectGraphics graphics;
 
-        protected Dictionary<string, AnimationParam> animTriggers;
-
-        protected virtual void Reset()
+        protected override void Reset()
         {
-            animator = GetComponent<Animator>();
-        } 
+            base.Reset();
 
-        protected virtual void Awake()
-        {
-            animTriggers = new Dictionary<string, AnimationParam>();
-        }
+            graphics = GetComponentInChildren<ObjectGraphics>();
 
-        protected void AddTrigger(string triggerName)
-        {
-            if (triggerName != null && triggerName != "")
-                animTriggers.Add(triggerName, new AnimationParam { paramName = triggerName, paramHash = Animator.StringToHash(triggerName) });
-        }
-
-        public void SetTrigger(string triggerName)
-        {
-            if (animTriggers.ContainsKey(triggerName))
-                animator?.SetTrigger(animTriggers[triggerName]);
-        }
-
-        public float GetCurrentAnimLength()
-        {
-            return animator.GetCurrentAnimatorStateInfo(0).length;
+            canvas.sortingLayerName = "Background";
+            canvas.sortingLayerID = SortingLayer.GetLayerValueFromName("Background");
+            canvas.sortingOrder = 0;
         }
     }
 }

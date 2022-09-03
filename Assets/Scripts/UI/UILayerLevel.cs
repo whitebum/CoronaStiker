@@ -6,7 +6,15 @@ namespace CoronaStriker.UI
 {
     public struct UILayerLevel
     {
-        public static int backgroundHUDLevel = 0;
-        public static int playerHUDLevel = 0;
+        #region Layer Name
+        public const string uiLayerName = "UI";
+        #endregion
+
+        #region Layer ID
+        public const int defaultID = 0;
+        public const int playerHUDID = 1;
+        public const int gameMessageID = 2;
+        public const int panelID = 3;
+        #endregion
     }
 }

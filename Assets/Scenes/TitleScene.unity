@@ -276,10 +276,10 @@ RectTransform:
   m_Father: {fileID: 1725987748}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &64767956
 MonoBehaviour:
@@ -348,12 +348,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 64767954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55309387d0597e44facd118d5d825c32, type: 3}
+  m_Script: {fileID: 11500000, guid: 53f68c8cc9240584dbcf0ebaa6a54448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 64767958}
-  introTrigger: Introduction
-  titleTrigger: Title
+  _animator: {fileID: 64767958}
 --- !u!1 &365224199
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040916ed00c8d1646b06c4d4b2840e7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  background: {fileID: 64767959}
+  background: {fileID: 1725987752}
   isEndedIntro: 0
   titleLogo: {fileID: 965904030}
   pressLogo: {fileID: 912316326}
@@ -863,7 +861,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: -1480683233
+  m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &1725987752
@@ -875,11 +873,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1725987747}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9279445e3ae7f244e80a13b44309ed99, type: 3}
+  m_Script: {fileID: 11500000, guid: 55309387d0597e44facd118d5d825c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_canvas: {fileID: 1725987751}
   m_canvasScaler: {fileID: 1725987750}
+  graphics: {fileID: 64767959}
+  introTrigger: Introduction
+  titleTrigger: Title
 --- !u!1 &1734528517
 GameObject:
   m_ObjectHideFlags: 0

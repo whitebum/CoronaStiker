@@ -9,7 +9,7 @@ namespace CoronaStriker.Core.Effects
     [RequireComponent(typeof(EffectGraphics))]
     public abstract class BaseEffect : MonoBehaviour
     {
-        [SerializeField] protected EffectGraphics graphics;
+        public EffectGraphics graphics;
 
         protected virtual void Reset()
         {

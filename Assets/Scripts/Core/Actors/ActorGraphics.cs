@@ -6,5 +6,8 @@ using CoronaStriker.Core.Utils;
 namespace CoronaStriker.Core.Actors
 {
     [RequireComponent(typeof(Renderer))]
-    public class ActorGraphics : ObjectGraphics { }
+    public class ActorGraphics : ObjectGraphics 
+    {
+        
+    }
 }

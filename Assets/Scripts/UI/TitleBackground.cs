@@ -16,26 +16,26 @@ namespace CoronaStriker.UI
         {
             base.Reset();
 
-            introTrigger = "";
-            titleTrigger = "";
+            introTrigger = "Introduction";
+            titleTrigger = "Main Title";
         }
 
         protected override void Awake()
         {
             base.Awake();
 
-            AddTrigger(introTrigger);
-            AddTrigger(titleTrigger);
+            graphics.AddParam(introTrigger);
+            graphics.AddParam(titleTrigger);
         }
 
-        public void IntruductionScreen()
+        public void SetIntruductionScreen()
         {
-            SetTrigger(introTrigger);
+            graphics.SetTrigger(introTrigger);
         }
 
-        public void TitleScreen()
+        public void SetTitleScreen()
         {
-            SetTrigger(titleTrigger);
+            graphics.SetTrigger(titleTrigger);
         }
     }
 }

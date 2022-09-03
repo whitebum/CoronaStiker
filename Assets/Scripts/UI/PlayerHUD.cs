@@ -5,7 +5,7 @@ using CoronaStriker.Level;
 
 namespace CoronaStriker.UI
 {
-    public class PlayerHUD : MonoBehaviour
+    public class PlayerHUD : CanvasHandler
     {
         [SerializeField] private StageManager stageManager;
         
@@ -13,17 +13,23 @@ namespace CoronaStriker.UI
         [SerializeField] private ScoreViewer scoreViewer;
         [SerializeField] private LifeViewer lifeViewer;
 
-        private void Reset()
+        protected override void Reset()
         {
-            stageManager = GetComponentInParent<StageManager>();
+            base.Reset();
+
+            canvas.sortingLayerName = UILayerLevel.uiLayerName;
+            canvas.sortingLayerID = SortingLayer.GetLayerValueFromName(UILayerLevel.uiLayerName);
+            canvas.sortingOrder = UILayerLevel.playerHUDID;
 
             timeViewer = GetComponentInChildren<TimeViewer>();
             scoreViewer = GetComponentInChildren<ScoreViewer>();
             lifeViewer = GetComponentInChildren<LifeViewer>();
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Reset();
+
             stageManager.scoreCounter.onValueChanged.AddListener((value) => { scoreViewer.UpdateViewer(value); });
             stageManager.gameTimer.onValueChanged.AddListener((value) => { timeViewer.UpdateViewer(value); });
             stageManager.playerHealth.onHeal.AddListener((value) => { lifeViewer.UpdateViewer(value); });

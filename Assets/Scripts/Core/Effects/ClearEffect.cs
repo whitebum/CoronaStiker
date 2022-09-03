@@ -4,10 +4,18 @@ namespace CoronaStriker.Core.Effects
 {
     public sealed class ClearEffect : InstantEffect
     {
-        private void Awake()
+        protected override void Reset()
         {
-            //graphics.GetComponent<SpriteRenderer>().sortingLayerName = EffectLeyerLevel.effectLayerName;
-            //graphics.GetComponent<SpriteRenderer>().sortingLayerID = EffectLeyerLevel.clearID;
+            base.Reset();
+
+            if (graphics != null)
+            {
+                var spriteRenderer = GetComponent<SpriteRenderer>() ?? gameObject.AddComponent<SpriteRenderer>();
+
+                spriteRenderer.sortingLayerName = EffectLeyerLevel.effectLayerName;
+                spriteRenderer.sortingLayerID = SortingLayer.NameToID(EffectLeyerLevel.effectLayerName);
+                spriteRenderer.sortingOrder = EffectLeyerLevel.clearID;
+            }
         }
     }
 }
