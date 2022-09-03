@@ -26,8 +26,6 @@ namespace CoronaStriker.UI
 
         private IEnumerator SceneTranslateCoroutine(int levelIndex = 0)
         {
-            GameManager.GetInstance().curLevelIndex = levelIndex;
-
             panel.gameObject.SetActive(true);
             yield return StartCoroutine(panel.FadeInCoroutine());
 

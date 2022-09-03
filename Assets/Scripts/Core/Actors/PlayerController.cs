@@ -8,19 +8,43 @@ namespace CoronaStriker.Core.Actors
 {
     public class PlayerController : MonoBehaviour
     {
-        public PlayerData playerParam;
+        [SerializeField] private Player player;
 
-        [Space(5.0f)]
-        [SerializeField] private ActorGraphics graphics;
-        
-        [Space(5.0f)]
-        [SerializeField] private PlayerHealth health;
-        [SerializeField] private PlayerMovement move;
+        [SerializeField] private string horizontalKey;
+        [SerializeField] private string verticalKey;
+
+        [SerializeField] private KeyCode attackKey1;
+        [SerializeField] private KeyCode attackKey2;
 
         private void Reset()
         {
-            health = GetComponent<PlayerHealth>();
-            move = GetComponent<PlayerMovement>();
+            player = GetComponent<Player>();
+
+            horizontalKey = "Horizontal";
+            verticalKey = "Vertical";
+
+            attackKey1 = KeyCode.Z;
+            attackKey2 = KeyCode.X;
+        }
+
+        private void Update()
+        {
+            if (Input.anyKey)
+            {
+                MovePlayer();
+            }
+        }
+        
+        private void MovePlayer()
+        {
+            var horizontal  = Input.GetAxisRaw(horizontalKey);
+            var vertical    = Input.GetAxisRaw(verticalKey);
+
+            var moveDirection = player.playerData.moveSpeed * 
+                                Time.deltaTime * 
+                                new Vector3(horizontal, vertical, 0.0f);
+
+            player.transform.Translate(moveDirection);
         }
     }
 }

@@ -26,16 +26,16 @@ namespace CoronaStriker.UI
 
         private void Start()
         {
-            var idx = 0;
-            var recordDatas = RecordManager.GetInstance().playerRecords;
-
-            while (idx < maxCollectionLength)
-            {
-                playerRecordViewers[idx].playerInitial = recordDatas[idx].playerInitial;
-                playerRecordViewers[idx].playerScore = recordDatas[idx].playerScore;
-
-                idx++;
-            }
+            //var idx = 0;
+            //var recordDatas = RecordManager.GetInstance().playerRecords;
+            //
+            //while (idx < maxCollectionLength)
+            //{
+            //    playerRecordViewers[idx].playerInitial = recordDatas[idx].playerInitial;
+            //    playerRecordViewers[idx].playerScore = recordDatas[idx].playerScore;
+            //
+            //    idx++;
+            //}
         }
     }
 }

@@ -13,11 +13,8 @@ namespace CoronaStriker.Core.Actors
         [SerializeField] protected Collider2D colider;
 
         [Header("이벤트들")]
-        [Tooltip("액터와 객체가 겹쳤을 때의 이벤트")]
         public UnityEvent onTriggerEnter;
-        [Tooltip("액터와 객체가 겹친 상태가 유지될 때의 이벤트")]
         public UnityEvent onTriggerStay;
-        [Tooltip("액터와 객체가 겹친 상태에서 탈출했을 때의 이벤트")]
         public UnityEvent onTriggerExit;
 
         private void Reset()

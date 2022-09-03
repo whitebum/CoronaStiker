@@ -7,66 +7,55 @@ using UnityEngine.Profiling;
 
 namespace CoronaStriker.Level
 {
-    public sealed class RecordManager : Singleton<RecordManager>
+    //public sealed class RecordManager : Singleton<RecordManager>
+    //{
+    //    private static string recordDataPath = @$"{Application.streamingAssetsPath}/Records.json";
+    //
+    //    private List<RecordData> recordDatas = new List<RecordData>();
+    //
+    //    private void Awake()
+    //    {
+    //        
+    //    }
+    //
+    //    public void TestCreateNewJson()
+    //    {
+    //        var temp = new RecordData[5];
+    //
+    //        for (var count = 0; count < temp.Length; ++count)
+    //        {
+    //            temp[count] = new RecordData { playerInitial = "AAA", playerScore = 000000, clearTime = 000.0f, killCount = 0 };
+    //        }
+    //
+    //        JsonUtility.ToJson(temp, true);
+    //    }
+    //}
+
+    public class RecordManager : MonoBehaviour
     {
-        private readonly string playerRecordsPath = @$"{Application.streamingAssetsPath}/Records.txt";
+        private static string recordDataPath = @$"{Application.streamingAssetsPath}/Records.json";
 
-        [SerializeField] private List<PlayerRecord> m_playerRecords;
-
-        public List<PlayerRecord> playerRecords { get => m_playerRecords; private set => m_playerRecords = value; }
-
-        private async void Awake()
+        private void Awake()
         {
-            playerRecords = new List<PlayerRecord>();
-
-            if (!File.Exists(playerRecordsPath))
-            {
-                var records = await File.ReadAllLinesAsync(playerRecordsPath);
-
-                foreach (var record in records)
-                {
-                    var recordData = record.Split(' ');
-
-                    playerRecords.Add(new PlayerRecord(recordData[0], recordData[1]));
-                }
-            }
-            else
-            {
-                var tempRecords = new List<PlayerRecord>
-                {
-                    //new PlayerRecord(new string(new char[] { (char)Random.Range(65, 91), (char)Random.Range(65, 91), (char)Random.Range(65, 91)}), Random.Range(10000, 50000)),
-                    //new PlayerRecord(new string(new char[] { (char)Random.Range(65, 91), (char)Random.Range(65, 91), (char)Random.Range(65, 91)}), Random.Range(10000, 50000)),
-                    //new PlayerRecord(new string(new char[] { (char)Random.Range(65, 91), (char)Random.Range(65, 91), (char)Random.Range(65, 91)}), Random.Range(10000, 50000)),
-                    //new PlayerRecord(new string(new char[] { (char)Random.Range(65, 91), (char)Random.Range(65, 91), (char)Random.Range(65, 91)}), Random.Range(10000, 50000)),
-                    //new PlayerRecord(new string(new char[] { (char)Random.Range(65, 91), (char)Random.Range(65, 91), (char)Random.Range(65, 91)}), Random.Range(10000, 50000))
-                    new PlayerRecord("AAA", 5000),
-                    new PlayerRecord("BBB", 4000),
-                    new PlayerRecord("CCC", 3000),
-                    new PlayerRecord("DDD", 2000),
-                    new PlayerRecord("EEE", 1000),
-            };
-
-                playerRecords.AddRange(tempRecords);
-            }
-
-            playerRecords.Sort((item, item2) => int.Parse(item2.playerScore).CompareTo(int.Parse(item.playerScore)));
+            TestCreateNewJson();
         }
 
-        protected override void OnApplicationQuit()
+        public void TestCreateNewJson()
         {
-            base.OnApplicationQuit();
-
-            if (!File.Exists(playerRecordsPath))
+            var temp = new List<RecordData>();
+            for (var count = 0; count < 5; ++count)
             {
-                var temp = File.CreateText(playerRecordsPath);
-
-                foreach (var record in playerRecords)
-                {
-                    temp.WriteLine($"{record}");
-                }
-
-                temp.Close();
+                temp.Add(new RecordData { playerInitial = "AAA", 
+                                               playerScore   = 000000, 
+                                               clearTime     = 000.0f, 
+                                               killCount     = 0        });
             }
+
+            var tempJson = JsonUtility.ToJson(temp[0]);
+
+            Debug.Log(tempJson);
+
+            File.WriteAllText(recordDataPath, tempJson);
         }
     }
 }

@@ -9,11 +9,11 @@ namespace CoronaStriker.Core.Actors
 {
     public class PlayerHealth : HealthSystem
     {
-        [SerializeField] private PlayerController controller;
+        [SerializeField] private Player player;
 
         public int maxHP
         {
-            get => controller.playerParam.maxHP;
+            get => player.playerData.maxHP;
         }
 
         public int curHP
